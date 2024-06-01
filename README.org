@@ -1,0 +1,108 @@
+[[https://github.com/donjuanplatinum/saying][file:https://img.shields.io/github/commit-activity/w/BarrenSea/.emacs.d?style=plastic&logoColor=yellow&color=blue.svg]]
+* A Lightweight Emacs
+** ShortCut
+[[1][file:img/shortcut1.png]]
+[[2][file:img/shortcut2.png]]
+[[3][file:img/shortcut3.png]]
+
+** Features
+1. [[#pyim][pyim]]
+2. [[#stardict][stardict]]
+3. [[#lsp][lsp-mode]]
+4. [[#docker][docker]]
+5. [[#treemacs][treemacs]]
+6. [[#typst][typst]]
+** Setup
+#+begin_src shell
+  git clone https://github.com/donjuanplatinum/.emacs.d ~/.emacs.d
+  #安装librime与typst-preview
+  cargo install typst-preview
+  cargo install typst-cli
+  emerge librime #gentoo
+#+end_src
+
+** Table
+[[#Packages][packages]]
+[[#keyboard][keboard]]
+** Packages
+| pyim               | 中文输入     |
+| stardict           | sdcv内置字典 |
+| magit              | git        |
+| company            | 补全        |
+| flycheck           | 语法检查     |
+| rainbow-delimiters | 彩虹括号     |
+| ace-window         | 窗口编号     |
+| dashboard          | 启动面板     |
+| circe              | IRC客户端    |
+| rust-mode          | rust模式    |
+| ement              | Matrix客户端 |
+| whichkey           | 快捷键提醒   |
+| docker             | docker交互  |
+| rime               | rime输入法   |
+| typst-mode         | typst模式   |
+| typst-preview-mode | typst预览   |
+
+** Keyboard
+*** 基础更改
+| C-c r | set-mark-command |
+
+*** pyim
+| C-\     | 启用pyim |
+*** ibuffer
+| /R | 加载预设 |
+*** org
+| M-o | org-insert-structure-template | 快速输入#+begin_ #+end_ |
+*** lsp-mode
+| C-c C-c a | 优化代码                 | lsp-execute-code-action        |
+| M-.       | 跳转函数,结构体,包等定义处  |                                |
+| M-?       | 列出标记的所有引用         |                                |
+| M-j       | 打开当前模块大纲          |                                |
+|           | 变量集体重构              | lsp-rename                     |
+|           | 代码重构,重构为更优美的表达 | lsp-execute-code-action        |
+| C-c C-c e | 展开宏                   | lsp-rust-analyzer-expand-macro |
+|           | 列出结构的impl           | lsp-find-implementation        |
+|           | 列出变量的类型定义         | lsp-find-type-definition       |
+*** stardict
+| C-c c c | 选择一个字典     | stardict-choose-dict     |
+| C-c c d | 在选择区查询字典 | stardict-translate-dict  |
+| C-c i   | 输入单词并翻译   | stardict-translate-input |
+| C-c s   | 显示当前字典     | stardict-show-dict       |
+
+*** stardict字典
+| bcgm                   | stardict-bcgm-2.4.2                   | 本草纲目           |
+| langdao-ec             | stardict-langdao-ec-gb-2.4.2          | 郎道英汉5.0        |
+| gaojihanyudacidian_fix | stardict-gaojihanyudacidian_fix-2.4.2 | 高级汉语大辞典修正版 |
+| ghycyzzd               | stardict-ghycyzzd-2.4.2               | 古汉语常用辞典      |
+| hanyuchengyucidian     | stardict-hanyuchengyucidian_fix-2.4.2 | 汉语成语辞典        |
+| computer               | stardict-kdic-computer-gb-2.4.2       | 计算机词汇         |
+| medical                | stardict-xiangya-medical-2.4.2        | 湘雅医学辞典        |
+
+
+
+
+*** treemacs
+| 调出treemacs | C-x t t              |
+| M-0         | 在treemacs和buffer切换 |
+| ?           | 帮助                   |
+
+*** windmove
+| C-c p | windmove-up   |
+| C-c n | windmove-down |
+| C-c b | windmove-left |
+| C-c f | windmove-right |
+
+
+
+*** windresize
+| C-c w | windresize |
+
+
+*** docker
+| C-c d | docker |
+*** region
+| M-@ / C-c r | set-mark-commnad |
+
+*** typst
+**** typst-mode
+| C-c C-c | typst-complie |
+| C-c C-w | typst-toggle-watch |

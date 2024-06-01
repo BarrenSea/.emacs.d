@@ -1,0 +1,17 @@
+auto-save-list
+recentf
+elpa
+.init.el.~undo-tree~
+smex-items
+amx-items
+transient
+url
+pyim
+*.emacs.bz2
+#*#
+.lsp-session-v1
+persist
+.cache
+org-persist
+rime/luna_pinyin.userdb
+rime/user.yaml
