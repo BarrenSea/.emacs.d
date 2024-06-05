@@ -21,7 +21,20 @@
   :config
   (setq whitespace-style '(face trailing)))
 ;;自动补全括号
-(electric-pair-mode t)
+(electric-pair-mode 1)
+(setq electric-pair-pairs
+      '(
+	(?\$ . ?\$)
+	(?\~ . ?\~)
+	(?\* . ?\*)
+	))
+
+
+
+
+
+
+
 ;;即使刷新
 ;(global-auto-revert-mode t)
 ;;折叠代码块
