@@ -22,12 +22,12 @@
   (setq whitespace-style '(face trailing)))
 ;;自动补全括号
 (electric-pair-mode 1)
-(setq electric-pair-pairs
-      '(
-	(?\$ . ?\$)
-	(?\~ . ?\~)
-	(?\* . ?\*)
-	))
+;(setq electric-pair-pairs
+      ;; '(
+      ;; 	(?\$ . ?\$)
+      ;; 	(?\~ . ?\~)
+      ;; 	(?\* . ?\*)
+      ;; 	))
 
 
 
