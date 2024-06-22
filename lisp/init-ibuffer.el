@@ -7,12 +7,12 @@
 
 (setq ibuffer-saved-filter-groups
       '(("ibuffer"
+	 ("rust"
+	  (used-mode . rust-mode))
 	 ("org_note"
 	  (used-mode . org-mode))
 	 ("typst"
 	  (used-mode . typst--markup-mode))
-	 ("rust"
-	  (used-mode . rust-mode))
 	 ("elisp"
 	  (used-mode . emacs-lisp-mode))
 	 ("haskell"
@@ -25,8 +25,14 @@
 	  (used-mode . dired-mode))
 	 ("conf"
 	  (used-mode . conf-unix-mode))
+	 ("toml"
+	  (used-mode . conf-toml-mode))
+	 ("markdown"
+	  (used-mode . markdown-mode))
 	 ("docker-compose"
 	  (name . "docker-compose"))
+	 ("message"
+	  (used-mode . messages-buffer-mode))
 	 ("magit"
 	  (name . "magit*"))
 	 ("special"
