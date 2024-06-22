@@ -41,6 +41,7 @@
 | rime               | rime输入法   |
 | typst-mode         | typst模式   |
 | typst-preview-mode | typst预览   |
+| pomidor            | 番茄钟       |
 
 ** Keyboard
 *** 基础更改
@@ -106,3 +107,11 @@
 **** typst-mode
 | C-c C-c | typst-complie |
 | C-c C-w | typst-toggle-watch |
+
+*** pomidor
+| C-c T | pomidor  |
+| Enter | 开启番茄钟 |
+| Space | 开始休息   |
+| R     | 重置Timer |
+| Q     | 关闭番茄钟 |
+
