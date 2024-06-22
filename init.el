@@ -40,6 +40,8 @@
 (require 'init-matrix)
 ;;;;whichkey
 (require 'init-whichkey)
+;;;;embark
+(require 'init-embark)
 ;;;;pyim输入
 ;(require 'init-pyim)
 ;;;;lsp-mode
@@ -86,7 +88,7 @@
  '(custom-safe-themes
    '("74e2ed63173b47d6dc9a82a9a8a6a9048d89760df18bc7033c5f91ff4d083e37" "2ce76d65a813fae8cfee5c207f46f2a256bac69dacbb096051a7a8651aa252b0" default))
  '(package-selected-packages
-   '(pomidor blamer git-gutter all-the-icons kaolin-themes websocket polymode rime haskell-mode windresize auctex lsp-treemacs treemacs-projectile treemacs pyim-cregexp-utils which-key rust-mode rainbow-delimiters pyim-basedict pyim popup nginx-mode magit lsp-ui kotlin-mode gameoflife flycheck-rust ement dockerfile-mode docker-compose-mode dashboard company-nginx circe-notifications ace-window 2048-game)))
+   '(embark marginalia pomidor blamer git-gutter all-the-icons kaolin-themes websocket polymode rime haskell-mode windresize auctex lsp-treemacs treemacs-projectile treemacs pyim-cregexp-utils which-key rust-mode rainbow-delimiters pyim-basedict pyim popup nginx-mode magit lsp-ui kotlin-mode gameoflife flycheck-rust ement dockerfile-mode docker-compose-mode dashboard company-nginx circe-notifications ace-window 2048-game)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
