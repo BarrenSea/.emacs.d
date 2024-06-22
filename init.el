@@ -40,6 +40,8 @@
 (require 'init-matrix)
 ;;;;whichkey
 (require 'init-whichkey)
+;;;;embark
+(require 'init-embark)
 ;;;;pyim输入
 ;(require 'init-pyim)
 ;;;;lsp-mode
