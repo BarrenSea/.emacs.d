@@ -174,7 +174,7 @@
   (setq ibuffer-saved-filter-groups
       '(("ibuffer"
 	 ("rust"
-	  (used-mode . rust-mode))
+	  (used-mode . rustic-mode))
 	 ("org_note"
 	  (used-mode . org-mode))
 	 ("typst"
@@ -539,9 +539,8 @@ rust
 **** rustic
 #+begin_src emacs-lisp
   (use-package rustic
-  :ensure
-  :bind (:map rustic-mod-map
-      ("C-c C-c l" . flycheck-list-errors)))
+  :ensure t)
+  
 #+end_src
 **** provide
 #+begin_src emacs-lisp
