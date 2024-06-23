@@ -57,7 +57,8 @@
 #+end_src
 *** 模式
 #+begin_src emacs-lisp
-  ;; org-mode
+
+;; org-mode
   (require 'init-org)
 
   ;; markdown-mode
@@ -568,6 +569,15 @@ markdown
   ;; Org mode的附加包，有诸多附加功能
   (use-package org-contrib
     :ensure t)
+#+end_src
+
+**** export
+***** ox-gfm
+导出markdown
+#+begin_src emacs-lisp
+  (use-package ox-gfm
+  :ensure t
+  :after ox)
 #+end_src
 **** insert
 #+begin_src emacs-lisp
