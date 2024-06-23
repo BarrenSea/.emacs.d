@@ -79,6 +79,8 @@
   (require 'init-whichkey)
   ;; undo-tree
   (require 'init-undo-tree)
+  ;; curx
+  (require 'init-crux)
 #+end_src
 *** git
 #+begin_src emacs-lisp
@@ -88,6 +90,8 @@
 #+begin_src emacs-lisp
   ;; 主题设置
   (require 'init-theme)
+  ;; 括号色彩
+  (require 'init-rainbow)
 #+end_src
 
 *** 窗口
@@ -684,6 +688,8 @@ rime输入法 输入法在rime分支
 
 **** treemacs
 #+begin_src emacs-lisp
+  (use-package all-the-icons
+    :ensure t)
   (use-package treemacs
   :ensure t
   :config
@@ -793,6 +799,30 @@ rime输入法 输入法在rime分支
   (provide 'init-undo-tree)
 #+end_src
 
+*** init-crux.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-crux.el :mkdirp yes
+:END:
+移动增强 删除增强等
+**** crux
+#+begin_src emacs-lisp
+(use-package crux
+  :ensure t
+  :bind (("C-a" . crux-move-beginning-of-line)
+         ("C-x 4 t" . crux-transpose-windows)
+         ("C-x K" . crux-kill-other-buffers)
+         ("C-k" . crux-smart-kill-line)
+         ("C-x DEL" . crux-kill-line-backwards))
+  :config
+  (crux-with-region-or-buffer indent-region)
+  (crux-with-region-or-buffer untabify)
+  (crux-with-region-or-point-to-eol kill-ring-save)
+  (defalias 'rename-file-and-buffer #'crux-rename-file-and-buffer))  
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-crux)
+#+end_src
 ** git配置
 *** init-git.el
 :PROPERTIES:
@@ -851,3 +881,19 @@ rime输入法 输入法在rime分支
 
 
 
+*** init-rainbow.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-rainbow.el :mkdirp yes
+:END:
+彩虹括号
+**** rainbow
+#+begin_src emacs-lisp
+  (use-package rainbow-delimiters
+  :ensure t
+  :hook (prog-mode . rainbow-delimiters-mode))
+#+end_src
+
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-rainbow)
+#+end_src
