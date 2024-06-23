@@ -1,0 +1,714 @@
+#+TITLE: Barrensea Emacs
+#+AUTHOR: DonjuanPlatinum in Barrensea
+#+DATE: 2024/6/22
+#+STARTUP: overview
+* key
+** flycheck
+| C-c C-c l | flycheck-list-errors | 显示错误列表 |
+** basic
+| M . | xref-find-definitions | 跳转到引用的源代码处 |
+| M , | xref-go-back          | 跳回去             |
+| M ? | xref-find-references  | 列出所有的引用          |
+* init.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle init.el
+:END:
+=init.el=
+
+** 导入路径
+#+begin_src emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/lisp/")
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/")
+#+end_src
+
+** 镜像设置
+#+begin_src emacs-lisp
+  (setq package-archives '(("gnu-mirror"   . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+			   ("melpa-mirror"  . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+			   ("nongnu-mirror" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/" )
+			   ("org-mirror" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
+			   ))
+#+end_src
+
+** 配置导入
+*** 变量
+#+begin_src emacs-lisp
+  ;; custom file
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file)
+#+end_src
+*** 常规
+#+begin_src emacs-lisp
+  ;; ibuffer配置
+  (require 'init-ibuffer)
+
+  ;; emacs自带默认模式设置
+  (require 'default-set)
+
+#+end_src
+*** 输入法
+#+begin_src emacs-lisp
+  (require 'init-rime)
+#+end_src
+*** 模式
+#+begin_src emacs-lisp
+  ;; org-mode
+  (require 'init-org)
+
+  ;; markdown-mode
+  (require 'init-markdown)
+
+  ;; rust
+  (require 'init-rust)
+
+  ;; flycheck
+  (require 'init-flycheck)
+#+end_src
+*** 功能
+#+begin_src emacs-lisp
+  ;; embark
+  (require 'init-embark)
+  ;; company
+  (require 'init-company)
+#+end_src
+*** git
+#+begin_src emacs-lisp
+  (require 'init-git)
+#+end_src
+*** 外观
+#+begin_src emacs-lisp
+  ;; 主题设置
+  (require 'init-theme)
+#+end_src
+** provide
+#+begin_src emacs-lisp
+  (provide 'init)
+#+end_src
+* custom.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle custom.el :mkdirp yes
+:END:
+
+用户变量保存处
+
+** rustic
+#+begin_src emacs-lisp
+  ;; rust-analyzer位置
+  (setq rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
+  ;; lsp-client
+  (setq rustic-lsp-client 'eglot)
+#+end_src
+
+** rime
+#+begin_src emacs-lisp
+  ;; 用户数据目录
+  (setq rime-user-data-dir "~/emacs.d/rime-data")
+  ;; 共享目录
+  (setq rime-share-data-dir "~/.config/fctix/rime-data")
+#+end_src
+* lisp
+** 通用配置
+*** default-set.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/default-set.el :mkdirp yes
+:END:
+
+基本的配置
+**** bind
+#+begin_src emacs-lisp
+  ;; set-mark-command bind
+  (global-set-key (kbd "C-c r") 'set-mark-command)
+#+end_src
+**** 习惯更改
+#+begin_src emacs-lisp
+  ;; 自动替换选择区内容
+  (delete-selection-mode 1)
+#+end_src
+**** 功能更改
+#+begin_src emacs-lisp
+  ;; 自动补全括号
+  (electric-pair-mode 1)
+
+  ;; 关闭提示音
+  (setq ring-bell-function 'ignore)
+
+  ;; 显示行号
+  (global-display-line-numbers-mode 'open)
+  (column-number-mode 1)
+
+  ;; 关闭自动备份~文件
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
+
+
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'default-set)
+#+end_src
+*** init-ibuffer.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-ibuffer.el :mkdirp yes
+:END:
+**** bind
+#+begin_src emacs-lisp
+  (global-unset-key (kbd "C-x C-b"))
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+#+end_src
+**** 配置
+#+begin_src emacs-lisp
+  ;; 不显示空组
+  (setq ibuffer-show-empty-filter-groups nil)
+#+end_src
+**** ibuffer主体
+#+begin_src emacs-lisp
+  (setq ibuffer-saved-filter-groups
+      '(("ibuffer"
+	 ("rust"
+	  (used-mode . rust-mode))
+	 ("org_note"
+	  (used-mode . org-mode))
+	 ("typst"
+	  (used-mode . typst--markup-mode))
+	 ("elisp"
+	  (used-mode . emacs-lisp-mode))
+	 ("haskell"
+	  (used-mode . haskell-mode))
+	 ("matrix"
+	  (name . "Ement*"))
+	 ("irc query"
+	  (used-mode . circe-query-mode))
+	 ("dired"
+	  (used-mode . dired-mode))
+	 ("conf"
+	  (used-mode . conf-unix-mode))
+	 ("toml"
+	  (used-mode . conf-toml-mode))
+	 ("markdown"
+	  (used-mode . markdown-mode))
+	 ("docker-compose"
+	  (name . "docker-compose"))
+	 ("message"
+	  (used-mode . messages-buffer-mode))
+	 ("magit"
+	  (name . "magit*"))
+	 ("special"
+	  (used-mode . special-mode))
+	 ("irc"
+	  (used-mode . circe-channel-mode)))))
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-ibuffer)
+#+end_src
+** 模式配置
+*** init-company.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-company.el :mkdirp yes
+:END:
+~company~ 自动补全
+**** company主体
+#+begin_src emacs-lisp
+  (use-package company
+    :ensure t
+    :init (global-company-mode)
+    :config
+    (setq company-minimum-prefix-length 1) ;;一个字开始补全
+    (setq company-show-quick-access t)
+    (setq company-show-numbers t) ;;显示选项编号
+    )
+#+end_src
+**** company拓展
+***** nginx
+#+begin_src emacs-lisp
+  (use-package company-nginx
+    :ensure t
+  )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-company)
+#+end_src
+*** init-markdown.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-markdown.el :mkdirp yes
+:END:
+markdown
+
+**** markdown主体
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :ensure t)
+#+end_src
+
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-markdown)
+#+end_src
+*** init-org.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-org.el :mkdirp yes
+:END:
+*org-mode*
+
+**** org主体
+#+begin_src emacs-lisp
+    (use-package org
+    :ensure nil
+    :mode ("\\.org\\'" . org-mode)
+    :hook ((org-mode . visual-line-mode)
+		   (org-mode . my/org-prettify-symbols))
+    :commands (org-find-exact-headline-in-buffer org-set-tags)
+    :custom-face
+    ;; 设置Org mode标题以及每级标题行的大小
+    (org-document-title ((t (:height 1.75 :weight bold))))
+    (org-level-1 ((t (:height 1.2 :weight bold))))
+    (org-level-2 ((t (:height 1.15 :weight bold))))
+    (org-level-3 ((t (:height 1.1 :weight bold))))
+    (org-level-4 ((t (:height 1.05 :weight bold))))
+    (org-level-5 ((t (:height 1.0 :weight bold))))
+    (org-level-6 ((t (:height 1.0 :weight bold))))
+    (org-level-7 ((t (:height 1.0 :weight bold))))
+    (org-level-8 ((t (:height 1.0 :weight bold))))
+    (org-level-9 ((t (:height 1.0 :weight bold))))
+    ;; 设置代码块用上下边线包裹
+    (org-block-begin-line ((t (:underline t :background unspecified))))
+    (org-block-end-line ((t (:overline t :underline nil :background unspecified))))
+    :config
+    ;; ================================
+    ;; 在org mode里美化字符串
+    ;; ================================
+    (defun my/org-prettify-symbols ()
+	  (setq prettify-symbols-alist
+		    (mapcan (lambda (x) (list x (cons (upcase (car x)) (cdr x))))
+				    '(
+					  ;; ("[ ]"              . 9744)         ; ☐
+					  ;; ("[X]"              . 9745)         ; ☑
+					  ;; ("[-]"              . 8863)         ; ⊟
+					  ("#+begin_src"      . 9998)         ; ✎
+					  ("#+end_src"        . 9633)         ; □
+					  ("#+begin_example"  . 129083)       ; 🠻
+					  ("#+end_example"    . 129081)       ; 🠹
+					  ("#+results:"       . 9776)         ; ☰
+					  ;; ("#+attr_latex:"    . "🄛")
+					  ;; ("#+attr_html:"     . "🄗")
+					  ;; ("#+attr_org:"      . "🄞")
+					  ;; ("#+name:"          . "🄝")         ; 127261
+					  ;; ("#+caption:"       . "🄒")
+					  ; 127250
+					  ("#+date:"          . "📅")         ; 128197
+					  ("#+author:"        . "💁")         ; 128100
+					  ("#+setupfile:"     . 128221)       ; 📝
+					  ("#+email:"         . 128231)       ; 📧
+					  ("#+startup:"       . 10034)        ; ✲
+					  ("#+options:"       . 9965)         ; ⛭
+					  ("#+title:"         . 10162)        ; ➲
+					  ("#+subtitle:"      . 11146)        ; ⮊
+					  ("#+downloaded:"    . 8650)         ; ⇊
+					  ("#+language:"      . 128441)       ; 🖹
+					  ("#+begin_quote"    . 187)          ; »
+					  ("#+end_quote"      . 171)          ; «
+		      ("#+begin_results"  . 8943)         ; ⋯
+		      ("#+end_results"    . 8943)         ; ⋯
+					  )))
+      (setq prettify-symbols-unprettify-at-point t)
+	  (prettify-symbols-mode 1))
+
+    ;; 提升latex预览的图片清晰度
+    (plist-put org-format-latex-options :scale 1.8)
+
+    ;; 设置标题行之间总是有空格；列表之间根据情况自动加空格
+    (setq org-blank-before-new-entry '((heading . t)
+									   (plain-list-item . auto)
+    :custom
+    ;; 启用一些子模块
+    (org-modules '(ol-bibtex ol-gnus ol-info ol-eww org-habit org-protocol))
+    ;; 在按M-RET时，是否根据光标所在的位置分行，这里设置为是
+    ;; (org-M-RET-may-split-line '((default . nil)))
+    ;; 一些Org mode自带的美化设置
+    ;; 标题行美化
+    (org-fontify-whole-heading-line t)
+    ;; 设置标题行折叠符号
+    (org-ellipsis " ▾")
+    ;; 在活动区域内的所有标题栏执行某些命令
+    (org-loop-over-headlines-in-active-region t)
+    ;; TODO标签美化
+    (org-fontify-todo-headline t)
+    ;; DONE标签美化
+    (org-fontify-done-headline t)
+    ;; 引用块美化
+    (org-fontify-quote-and-verse-blocks t)
+    ;; 隐藏宏标记
+    (org-hide-macro-markers t)
+    ;; 隐藏强调标签
+    (org-hide-emphasis-markers t)
+    ;; 高亮latex语法
+    (org-highlight-latex-and-related '(native script entities))
+    ;; 以UTF-8显示
+    (org-pretty-entities t)
+    ;; 是否隐藏标题栏的前置星号，这里我们通过org-modern来隐藏
+    ;; (org-hide-leading-stars t)
+    ;; 当启用缩进模式时自动隐藏前置星号
+    (org-indent-mode-turns-on-hiding-stars t)
+    ;; 自动启用缩进
+    (org-startup-indented nil)
+    ;; 根据标题栏自动缩进文本
+    (org-adapt-indentation nil)
+    ;; 自动显示图片
+    (org-startup-with-inline-images t)
+    ;; 默认以Overview的模式展示标题行
+    (org-startup-folded 'overview)
+    ;; 允许字母列表
+    (org-list-allow-alphabetical t)
+    ;; 列表的下一级设置
+    (org-list-demote-modify-bullet '(
+								     ("-"  . "+")
+				     ("+"  . "1.")
+								     ("1." . "a.")
+								     ))
+    ;; 编辑时检查是否在折叠的不可见区域
+    (org-fold-catch-invisible-edits 'smart)
+    ;; 在当前位置插入新标题行还是在当前标题行后插入，这里设置为当前位置
+    (org-insert-heading-respect-content nil)
+    ;; 设置图片的最大宽度，如果有imagemagick支持将会改变图片实际宽度
+    ;; 四种设置方法：(1080), 1080, t, nil
+    (org-image-actual-width nil)
+    ;; imenu的最大深度，默认为2
+    (org-imenu-depth 4)
+    ;; 回车要不要触发链接，这里设置不触发
+    (org-return-follows-link nil)
+    ;; 上标^下标_是否需要特殊字符包裹，这里设置需要用大括号包裹
+    (org-use-sub-superscripts '{})
+    ;; 复制粘贴标题行的时候删除id
+    (org-clone-delete-id t)
+    ;; 粘贴时调整标题行的级别
+    (org-yank-adjusted-subtrees t)
+
+    ;; TOOD的关键词设置，可以设置不同的组
+    (org-todo-keywords '((sequence "TODO(t)" "HOLD(h!)" "WIP(i!)" "WAIT(w!)" "|" "DONE(d!)" "CANCELLED(c@/!)")
+					     (sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f!)")))
+    ;; TODO关键词的样式设置
+    (org-todo-keyword-faces '(("TODO"       :foreground "#7c7c75" :weight bold)
+							  ("HOLD"       :foreground "#feb24c" :weight bold)
+							  ("WIP"        :foreground "#0098dd" :weight bold)
+							  ("WAIT"       :foreground "#9f7efe" :weight bold)
+							  ("DONE"       :foreground "#50a14f" :weight bold)
+							  ("CANCELLED"  :foreground "#ff6480" :weight bold)
+							  ("REPORT"     :foreground "magenta" :weight bold)
+							  ("BUG"        :foreground "red"     :weight bold)
+							  ("KNOWNCAUSE" :foreground "yellow"  :weight bold)
+							  ("FIXED"      :foreground "green"   :weight bold)))
+    ;; 当标题行状态变化时标签同步发生的变化
+    ;; Moving a task to CANCELLED adds a CANCELLED tag
+    ;; Moving a task to WAIT adds a WAIT tag
+    ;; Moving a task to HOLD adds WAIT and HOLD tags
+    ;; Moving a task to a done state removes WAIT and HOLD tags
+    ;; Moving a task to TODO removes WAIT, CANCELLED, and HOLD tags
+    ;; Moving a task to DONE removes WAIT, CANCELLED, and HOLD tags
+    (org-todo-state-tags-triggers
+     (quote (("CANCELLED" ("CANCELLED" . t))
+		     ("WAIT" ("WAIT" . t))
+		     ("HOLD" ("WAIT") ("HOLD" . t))
+		     (done ("WAIT") ("HOLD"))
+		     ("TODO" ("WAIT") ("CANCELLED") ("HOLD"))
+		     ("DONE" ("WAIT") ("CANCELLED") ("HOLD")))))
+    ;; 使用专家模式选择标题栏状态
+    (org-use-fast-todo-selection 'expert)
+    ;; 父子标题栏状态有依赖
+    (org-enforce-todo-dependencies t)
+    ;; 标题栏和任务复选框有依赖
+    (org-enforce-todo-checkbox-dependencies t)
+    ;; 优先级样式设置
+    (org-priority-faces '((?A :foreground "red")
+						  (?B :foreground "orange")
+						  (?C :foreground "yellow")))
+    ;; 标题行全局属性设置
+    (org-global-properties '(("EFFORT_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 7:00 8:00")
+						     ("APPT_WARNTIME_ALL" . "0 5 10 15 20 25 30 45 60")
+						     ("RISK_ALL" . "Low Medium High")
+						     ("STYLE_ALL" . "habit")))
+    ;; Org columns的默认格式
+    (org-columns-default-format "%25ITEM %TODO %SCHEDULED %DEADLINE %3PRIORITY %TAGS %CLOCKSUM %EFFORT{:}")
+    ;; 当状态从DONE改成其他状态时，移除 CLOSED: [timestamp]
+    (org-closed-keep-when-no-todo t)
+    ;; DONE时加上时间戳
+    (org-log-done 'time)
+    ;; 重复执行时加上时间戳
+    (org-log-repeat 'time)
+    ;; Deadline修改时加上一条记录
+    (org-log-redeadline 'note)
+    ;; Schedule修改时加上一条记录
+    (org-log-reschedule 'note)
+    ;; 以抽屉的方式记录
+    (org-log-into-drawer t)
+    ;; 紧接着标题行或者计划/截止时间戳后加上记录抽屉
+    (org-log-state-notes-insert-after-drawers nil)
+
+    ;; refile使用缓存
+    (org-refile-use-cache t)
+    ;; refile的目的地，这里设置的是agenda文件的所有标题
+    (org-refile-targets '((org-agenda-files . (:maxlevel . 9))))
+    ;; 将文件名加入到路径
+    (org-refile-use-outline-path 'file)
+    ;; 是否按步骤refile
+    (org-outline-path-complete-in-steps nil)
+    ;; 允许创建新的标题行，但需要确认
+    (org-refile-allow-creating-parent-nodes 'confirm)
+
+    ;; 设置标签的默认位置，默认是第77列右对齐
+    ;; (org-tags-column -77)
+    ;; 自动对齐标签
+    (org-auto-align-tags t)
+    ;; 标签不继承
+    (org-use-tag-inheritance nil)
+    ;; 在日程视图的标签不继承
+    (org-agenda-use-tag-inheritance nil)
+    ;; 标签快速选择
+    (org-use-fast-tag-selection t)
+    ;; 标签选择不需要回车确认
+    (org-fast-tag-selection-single-key t)
+    ;; 定义了有序属性的标题行也加上 OREDERD 标签
+    (org-track-ordered-property-with-tag t)
+    ;; 始终存在的的标签
+    (org-tag-persistent-alist '(("read"     . ?r)
+							    ("mail"     . ?m)
+							    ("emacs"    . ?e)
+							    ("study"    . ?s)
+							    ("work"     . ?w)))
+    ;; 预定义好的标签
+    (org-tag-alist '((:startgroup)
+				     ("crypt"    . ?c)
+				     ("linux"    . ?l)
+				     ("apple"    . ?a)
+				     ("noexport" . ?n)
+				     ("ignore"   . ?i)
+				     ("TOC"      . ?t)
+				     (:endgroup)))
+
+    ;; 归档设置
+    (org-archive-location "%s_archive::datetree/")
+    )))
+#+end_src
+**** org-contrib
+#+begin_src emacs-lisp
+  ;; Org mode的附加包，有诸多附加功能
+  (use-package org-contrib
+    :ensure t)
+#+end_src
+**** insert
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-o") 'org-insert-structure-template)
+#+end_src
+**** src
+#+begin_src emacs-lisp
+  ;; 代码块高亮
+  (setq org-src-fontify-natively t)
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-org)
+#+end_src
+*** init-polymode.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-polymode.el :mkdirp yes
+:END:
+poly
+**** 主体
+#+begin_src emacs-lisp
+  (use-package polymode
+    :ensure t)
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-polymode)
+#+end_src
+*** init-rust.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-rust.el :mkdirp yes
+:END:
+rust
+**** rustic
+#+begin_src emacs-lisp
+  (use-package rustic
+  :ensure
+  :bind (:map rustic-mod-map
+      ("C-c C-c l" . flycheck-list-errors)))
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-rust)
+#+end_src
+*** init-flycheck.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-flycheck.el :mkdirp yes
+:END:
+**** flycheck
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :config
+    (setq truncate-lines nil) ;自动换行
+    :init (global-flycheck-mode)
+    )
+#+end_src
+**** flycheck-rust
+#+begin_src emacs-lisp
+  (use-package flycheck-rust
+  :ensure t
+  )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-flycheck)
+#+end_src
+** 输入法
+*** init-rime.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-rime.el :mkdirp yes
+:END:
+rime输入法 输入法在rime分支
+**** popup
+#+begin_src emacs-lisp
+  ;; popup
+  (use-package popup
+    :ensure t
+    )
+#+end_src
+
+**** rime主体
+#+begin_src emacs-lisp
+  (use-package rime
+  :ensure t
+  :custom
+  (default-input-method "rime")
+  (rime-show-candidate 'popup)
+  )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-rime)
+#+end_src
+** 窗口配置
+*** init-ace-window.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-ace-window.el :mkdirp yes
+:END:
+窗口编号
+**** ace-window主体
+#+begin_src emacs-lisp
+  (use-package ace-window
+  :ensure t
+  :bind
+  ("C-x o" . ace-window)
+  )
+#+end_src
+
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-ace-window)
+#+end_src
+** 功能配置
+*** init-embark.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-embark.el :mkdirp yes
+:END:
+~embark~
+**** embark主体
+#+begin_src emacs-lisp
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode))
+
+(use-package embark
+  :ensure t
+
+  :bind
+  (("C-." . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+  :init
+
+  ;; Optionally replace the key help with a completing-read interface
+;;  (setq prefix-help-command #'embark-prefix-help-command)
+
+  ;; Show the Embark target at point via Eldoc. You may adjust the
+  ;; Eldoc strategy, if you want to see the documentation from
+  ;; multiple providers. Beware that using this can be a little
+  ;; jarring since the message shown in the minibuffer can be more
+  ;; than one line, causing the modeline to move up and down:
+
+  ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+
+  :config
+
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-embark)
+#+end_src
+** git配置
+*** init-git.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-git.el :mkdirp yes
+:END:
+~git~
+**** magit
+#+begin_src emacs-lisp
+  (use-package magit
+    :ensure t)
+#+end_src
+**** git-gutter
+#+begin_src emacs-lisp
+  (use-package git-gutter
+    :ensure t
+    :config (global-git-gutter-mode +1))
+#+end_src
+**** balmer
+#+begin_src emacs-lisp
+  (use-package blamer
+  :ensure t
+  :defer 20
+  :custom
+  (blamer-idle-time 1) ; 延迟时间
+  (blamer-min-offset 70)
+  :custom-face
+  (blamer-face ((t :foreground "#7a88cf"
+		    :background nil
+		    :height 100
+		    :italic t)))
+  :config
+  (global-blamer-mode 1))
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-git)
+#+end_src
+** 外观
+*** init-theme.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-theme.el :mkdirp yes
+:END:
+主题设置
+**** kaolin-themes
+#+begin_src emacs-lisp
+  (use-package kaolin-themes
+    :ensure t
+    :config
+    (load-theme 'kaolin-dark t)
+    (kaolin-treemacs-theme))
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-theme)
+#+end_src
+
