@@ -1,0 +1,119 @@
+#+TITLE: Barrensea Emacs
+#+AUTHOR: DonjuanPlatinum in Barrensea
+#+DATE: 2024/6/22
+#+STARTUP: overview
+
+* init.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle init.el
+:END:
+=init.el=
+
+** 导入路径
+#+begin_src emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/lisp/")
+  (add-to-list 'load-path "~/.emacs.d/site-lisp/")
+#+end_src
+
+** 镜像设置
+#+begin_src emacs-lisp
+  (setq package-archives '(("gnu-mirror"   . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+			   ("melpa-mirror"  . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+			   ("nongnu-mirror" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/" )
+			   ("org-mirror" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
+			   ))
+#+end_src
+
+** 配置导入
+*** 变量
+#+begin_src emacs-lisp
+  ;; custom file
+  (setq custom-file "~/.emacs.d/custom.el")
+  (load custom-file)
+#+end_src
+*** 常规
+#+begin_src emacs-lisp
+  ;; ibuffer配置
+  (require 'init-ibuffer)
+
+  ;; emacs自带默认模式设置
+  (require 'default-set)
+
+  ;; 主题设置
+  (require 'init-theme)
+
+  ;; 启动面板
+  (require 'init-dashboard)
+
+  ;; popup
+  (require 'init-popup)
+#+end_src
+*** 模式
+#+begin_src emacs-lisp
+  ;; org-mode
+  (require 'init-org)
+
+  ;; markdown-mode
+  (require 'init-markdown)
+
+  ;; rust
+  (require 'init-rust)
+#+end_src
+
+** provide
+#+begin_src emacs-lisp
+  (provide 'init)
+#+end_src
+* custom.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle custom.el :mkdirp yes
+:END:
+
+用户变量保存处
+
+** rustic
+#+begin_src emacs-lisp
+  ;; rust-analyzer位置
+  (setq rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
+  ;; lsp-client
+  (setq rustic-lsp-client 'eglot)
+#+end_src
+
+* lisp
+** default-set.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/default-set.el :mkdirp yes
+:END:
+
+基本的配置
+*** 习惯更改
+#+begin_src emacs-lisp
+  ;; set-mark-command bind
+  (global-set-key (kbd "C-c r") 'set-mark-command)
+
+
+  ;; 自动替换选择区内容
+  (delete-selection-mode 1)
+
+
+#+end_src
+*** 功能更改
+#+begin_src emacs-lisp
+  ;; 自动补全括号
+  (electric-pair-mode 1)
+
+  ;; 关闭提示音
+  (setq ring-bell-function 'ignore)
+
+  ;; 显示行号
+  (global-display-line-numbers-mode 'open)
+  (column-number-mode 1)
+
+  ;; 关闭自动备份~文件
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
+
+  (provide 'default-set)
+#+end_src
+
+
