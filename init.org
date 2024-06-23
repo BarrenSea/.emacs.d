@@ -6,7 +6,8 @@
 ** flycheck
 | C-c C-c l | flycheck-list-errors | 显示错误列表 |
 ** basic
-| C-c r | set-mark-command | 选中 |
+| C-c r | set-mark-command    | 选中 |
+| C-c m | rectangle-mark-mode | 矩形选中 |
 *** xref
 | M . | xref-find-definitions | 跳转到引用的源代码处 |
 | M , | xref-go-back          | 跳回去             |
@@ -76,6 +77,8 @@
   (require 'init-company)
   ;; whichkey
   (require 'init-whichkey)
+  ;; undo-tree
+  (require 'init-undo-tree)
 #+end_src
 *** git
 #+begin_src emacs-lisp
@@ -131,6 +134,8 @@
 #+begin_src emacs-lisp
   ;; set-mark-command bind
   (global-set-key (kbd "C-c r") 'set-mark-command)
+  ;; 矩形操作
+  (global-set-key (kbd "C-c m") 'rectangle-mark-mode)
 #+end_src
 **** 习惯更改
 #+begin_src emacs-lisp
@@ -715,6 +720,27 @@ rime输入法 输入法在rime分支
 #+begin_src emacs-lisp
   (provide 'init-whichkey)
 #+end_src
+
+*** init-undo-tree.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-undo-tree.el :mkdirp yes
+:END:
+
+**** undo-tree
+#+begin_src emacs-lisp
+  (use-package undo-tree
+  :ensure t
+  :hook (after-init . global-undo-tree-mode)
+  :config
+  ;; don't save undo history to local files
+  (setq undo-tree-auto-save-history nil)
+  )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-undo-tree)
+#+end_src
+
 ** git配置
 *** init-git.el
 :PROPERTIES:
