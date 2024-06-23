@@ -6,15 +6,19 @@
 ** flycheck
 | C-c C-c l | flycheck-list-errors | 显示错误列表 |
 ** basic
+| C-c r | set-mark-command | 选中 |
+*** xref
 | M . | xref-find-definitions | 跳转到引用的源代码处 |
 | M , | xref-go-back          | 跳回去             |
-| M ? | xref-find-references  | 列出所有的引用          |
+| M ? | xref-find-references  | 列出所有的引用      |
+
+** org
+| M-o | 'org-insert-structure-template | 快速插入代码块 |
 * init.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle init.el
 :END:
 =init.el=
-
 ** 导入路径
 #+begin_src emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/lisp/")
@@ -80,6 +84,11 @@
   ;; 主题设置
   (require 'init-theme)
 #+end_src
+
+*** 窗口
+#+begin_src emacs-lisp
+  (require 'init-ace-window)
+#+end_src
 ** provide
 #+begin_src emacs-lisp
   (provide 'init)
@@ -102,7 +111,7 @@
 ** rime
 #+begin_src emacs-lisp
   ;; 用户数据目录
-  (setq rime-user-data-dir "~/emacs.d/rime-data")
+  (setq rime-user-data-dir "~/.emacs.d/rime-data")
   ;; 共享目录
   (setq rime-share-data-dir "~/.config/fctix/rime-data")
 #+end_src
