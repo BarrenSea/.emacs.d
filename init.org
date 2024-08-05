@@ -73,7 +73,8 @@
   ;; python
   (require 'init-python)
 
-
+  ;; yaml
+  (require 'init-yaml)
 #+end_src
 *** 功能
 #+begin_src emacs-lisp
@@ -719,6 +720,22 @@ rust
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-python)
+#+end_src
+
+*** init-yaml.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-yaml.el :mkdirp yes
+:END:
+
+**** yaml-mode
+#+begin_src emacs-lisp
+    (use-package yaml-mode
+      :ensure t)
+#+end_src
+
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-yaml)
 #+end_src
 ** 输入法
 *** init-rime.el
