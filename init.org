@@ -683,6 +683,13 @@ markdown
   (org-mode . org-fragtog-mode)
   )
 #+end_src
+
+**** toc-org
+#+begin_src emacs-lisp
+  (use-package toc-org
+  :ensure t
+  )
+#+end_src
 **** export
 ***** ox-gfm
 导出markdown
