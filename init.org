@@ -689,6 +689,9 @@ markdown
   (use-package toc-org
   :ensure t
   )
+
+  (add-hook 'org-mode-hook 'toc-org-mode)
+  (add-hook 'markdown-mode-hook 'toc-org-mode)
 #+end_src
 **** export
 ***** ox-gfm
