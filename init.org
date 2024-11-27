@@ -118,13 +118,13 @@
 
 用户变量保存处
 
-** rustic
-#+begin_src emacs-lisp
-  ;; rust-analyzer位置
-  (setq rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
-  ;; lsp-client
-  (setq rustic-lsp-client 'eglot)
-#+end_src
+# ** rustic
+# #+begin_src emacs-lisp
+#   ;; rust-analyzer位置
+#  (setq rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
+#  ;; lsp-client
+#  (setq rustic-lsp-client 'eglot)		;
+# #+end_src
 
 ** rime
 #+begin_src emacs-lisp
@@ -241,7 +241,9 @@
   (setq ibuffer-saved-filter-groups
       '(("ibuffer"
 	 ("rust"
-	  (used-mode . rustic-mode))
+	  (used-mode . rust-mode))
+	 ("python"
+	  (used-mode . python-mode))
 	 ("org_note"
 	  (used-mode . org-mode))
 	 ("typst"
@@ -693,6 +695,14 @@ markdown
   (add-hook 'org-mode-hook 'toc-org-mode)
   (add-hook 'markdown-mode-hook 'toc-org-mode)
 #+end_src
+
+**** easy-hugo
+#+begin_src emacs-lisp
+  (use-package easy-hugo
+    :ensure t
+    )
+  (setq easy-hugo-basedir "~/project/donjuan")
+#+end_src
 **** export
 ***** ox-gfm
 导出markdown
@@ -787,16 +797,22 @@ poly
 :HEADER-ARGS: :tangle lisp/init-rust.el :mkdirp yes
 :END:
 rust
-**** rustic
+# **** rustic
+# #+begin_src emacs-lisp
+#  (use-package rustic
+#  :ensure t)
+#  
+# #+end_src
+**** rust-mode
 #+begin_src emacs-lisp
-  (use-package rustic
-  :ensure t)
-  
+    (use-package rust-mode
+      :ensure t)
 #+end_src
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-rust)
 #+end_src
+
 *** init-flycheck.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle lisp/init-flycheck.el :mkdirp yes
