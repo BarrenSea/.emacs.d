@@ -99,6 +99,8 @@
   (require 'init-theme)
   ;; 括号色彩
   (require 'init-rainbow)
+  ;; 启动面板
+  (require 'init-dashboard)
 #+end_src
 
 *** 窗口
@@ -1133,6 +1135,47 @@ rime输入法 输入法在rime分支
   (provide 'init-rainbow)
 #+end_src
 
+*** init-dashboard.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-dashboard.el :mkdirp yes
+:END:
+启动面板
+
+**** dashboard
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :ensure t
+    :config
+    (dashboard-setup-startup-hook)
+
+    )
+#+end_src
+
+**** banner
+#+begin_src emacs-lisp
+  (setq dashboard-banner-logo-title "DonjuanPlatinum")
+  (setq dashboard-startup-banner "~/.emacs.d/img/donjuan.png")
+  (setq dashboard-center-content t)
+  (setq dashboard-vertically-center-content t)
+#+end_src
+**** dashboard-items
+#+begin_src emacs-lisp
+  (setq dashboard-items '(
+			  (recents . 5)
+			  (projects . 5)
+			  ))
+#+end_src
+
+**** dashboard-item-shortcuts
+#+begin_src emacs-lisp
+  (setq dashboard-item-shortcuts '((recents . "r")
+				   (projects . "p")
+				   ))
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-dashboard)
+#+end_src
 * css
 ** markdown
 
