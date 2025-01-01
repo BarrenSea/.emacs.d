@@ -131,9 +131,9 @@
 ** rime
 #+begin_src emacs-lisp
   ;; 用户数据目录
-  (setq rime-user-data-dir "~/.emacs.d/rime-data")
+  ;;(setq rime-user-data-dir "~/.emacs.d/rime-data")
   ;; 共享目录
-  (setq rime-share-data-dir "~/.config/fctix/rime-data")
+  ;;(setq rime-share-data-dir "~/.config/fctix/rime-data")
 #+end_src
 ** custom-set-face
 #+begin_src emacs-lisp
