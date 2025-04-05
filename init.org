@@ -58,23 +58,30 @@
 *** 模式
 #+begin_src emacs-lisp
 
-  ;; org-mode
-  (require 'init-org)
+    ;; org-mode
+    (require 'init-org)
 
-  ;; markdown-mode
-  (require 'init-markdown)
+    ;; markdown-mode
+    (require 'init-markdown)
 
-  ;; rust
-  (require 'init-rust)
+    ;; rust
+    (require 'init-rust)
+
 
   ;; flycheck
-  (require 'init-flycheck)
+    (require 'init-flycheck)
 
-  ;; python
-  (require 'init-python)
+    ;; python
+    (require 'init-python)
 
-  ;; yaml
-  (require 'init-yaml)
+    ;; yaml
+    (require 'init-yaml)
+
+    ;; maxima
+    (require 'init-maxima)
+
+   ;; docker
+  (require 'init-docker)
 #+end_src
 *** 功能
 #+begin_src emacs-lisp
@@ -88,6 +95,10 @@
   (require 'init-undo-tree)
   ;; curx
   (require 'init-crux)
+  ;; keycast
+  (require 'init-keycast)
+  ;; tramp
+  (require 'init-tramp)
 #+end_src
 *** git
 #+begin_src emacs-lisp
@@ -871,6 +882,37 @@ rust
 #+begin_src emacs-lisp
   (provide 'init-yaml)
 #+end_src
+
+*** init-maxima.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-maxima.el :mkdirp yes
+:END:
+
+**** maxima
+#+begin_src emacs-lisp
+   (use-package maxima
+     :ensure t) 
+#+end_src
+
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-maxima)
+#+end_src
+
+*** init-docker.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-docker.el :mkdirp yes
+:END:
+
+**** dockerfile-mode
+#+begin_src emacs-lisp
+    (use-package dockerfile-mode
+      :ensure t)
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-docker)
+#+end_src
 ** 输入法
 *** init-rime.el
 :PROPERTIES:
@@ -1059,6 +1101,40 @@ rime输入法 输入法在rime分支
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-crux)
+#+end_src
+
+*** init-keycast.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-keycast.el :mkdirp yes
+:END:
+按键显示到状态栏
+**** keycast
+#+begin_src emacs-lisp
+  (use-package keycast
+    :ensure t
+    :config
+    (progn
+      (add-to-list 'global-mode-string '("" keycast-mode-line))
+      (keycast-header-line-mode t))
+    )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-keycast)
+#+end_src
+
+*** init-tramp.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-tramp.el :mkdirp yes
+:END:
+**** tramp
+#+begin_src emacs-lisp
+  (use-package tramp
+  :ensure t)
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-tramp)
 #+end_src
 ** git配置
 *** init-git.el
