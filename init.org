@@ -50,6 +50,8 @@
   ;; emacs自带默认模式设置
   (require 'default-set)
 
+  ;; benchmark
+  (require 'init-benchmark)
 #+end_src
 *** 输入法
 #+begin_src emacs-lisp
@@ -291,6 +293,24 @@
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-ibuffer)
+#+end_src
+
+*** init-benchmark.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-benchmark.el :mkdirp yes
+:END:
+**** benchmark
+#+begin_src emacs-lisp
+  (use-package benchmark-init
+  :ensure t
+  :config
+  ;; To disable collection of benchmark data after init is done.
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+#+end_src
+
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-benchmark)
 #+end_src
 ** 模式配置
 *** init-company.el
