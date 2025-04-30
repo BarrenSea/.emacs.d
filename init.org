@@ -20,6 +20,11 @@
 :HEADER-ARGS: :tangle init.el
 :END:
 =init.el=
+** 垃圾处理
+#+begin_src emacs-lisp
+  (setq gc-cons-percentage 0.5
+      gc-cons-threshold (* 128 1024 1024))
+#+end_src
 ** 导入路径
 #+begin_src emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/lisp/")
@@ -35,6 +40,14 @@
 			   ))
 #+end_src
 
+** benchmark
+#+begin_src emacs-lisp
+  (use-package benchmark-init
+    :ensure t
+    :config
+  ;; To disable collection of benchmark data after init is done.
+    (add-hook 'after-init-hook 'benchmark-init/deactivate))
+#+end_src
 ** 配置导入
 *** 变量
 #+begin_src emacs-lisp
@@ -301,11 +314,7 @@
 :END:
 **** benchmark
 #+begin_src emacs-lisp
-  (use-package benchmark-init
-  :ensure t
-  :config
-  ;; To disable collection of benchmark data after init is done.
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+
 #+end_src
 
 **** provide
@@ -322,7 +331,10 @@
 #+begin_src emacs-lisp
   (use-package company
     :ensure t
-    :init (global-company-mode)
+    :defer t
+;    :init (global-company-mode)
+    :hook
+    (prog-mode . company-mode) ; 编程模式启用company-mode
     :config
     (setq company-minimum-prefix-length 1) ;;一个字开始补全
     (setq company-show-quick-access t)
@@ -332,18 +344,20 @@
 
 **** company-quickhelp
 #+begin_src emacs-lisp
-  ;; 提供上下文帮助
-(use-package company-quickhelp
-  :ensure t
-  :hook (company-mode . company-quickhelp-mode)
-  :config
-  (setq company-quickhelp-delay 0.5))  ;; 设置帮助显示延迟
+    ;; 提供上下文帮助
+  (use-package company-quickhelp
+    :ensure t
+    :defer t
+    :hook (company-mode . company-quickhelp-mode)
+    :config
+    (setq company-quickhelp-delay 0.5))  ;; 设置帮助显示延迟
 #+end_src
 **** company拓展
 ***** nginx
 #+begin_src emacs-lisp
   (use-package company-nginx
     :ensure t
+    :defer t
   )
 #+end_src
 **** provide
@@ -358,30 +372,32 @@ markdown
 
 **** markdown主体
 #+begin_src emacs-lisp
-  ;; 安装 markdown-mode
-(use-package markdown-mode
-  :ensure t
-  :mode ("\\.md\\'" "\\.markdown\\'")
-  :commands (markdown-mode gfm-mode)
-  :config
-  (setq markdown-command "pandoc") ;; 可选：使用 pandoc 作为Markdown 渲染工具
-  ;; 配置 Markdown 快捷键
-  (bind-key "C-c C-c" 'markdown-command markdown-mode-map)
+    ;; 安装 markdown-mode
+  (use-package markdown-mode
+    :ensure t
+    :defer t
+    :mode ("\\.md\\'" "\\.markdown\\'")
+    :commands (markdown-mode gfm-mode)
+    :config
+    (setq markdown-command "pandoc") ;; 可选：使用 pandoc 作为Markdown 渲染工具
+    ;; 配置 Markdown 快捷键
+    (bind-key "C-c C-c" 'markdown-command markdown-mode-map)
   
-  ;; 自定义 Markdown 编辑器行为
-  (setq markdown-fontify-code-blocks-natively t) ;; 高亮代码块
-  (setq markdown-enable-math t) ;; 启用数学公式支持
-  (setq markdown-hide-markup t)) ;; 隐藏标记符
+    ;; 自定义 Markdown 编辑器行为
+    (setq markdown-fontify-code-blocks-natively t) ;; 高亮代码块
+    (setq markdown-enable-math t) ;; 启用数学公式支持
+    (setq markdown-hide-markup t)) ;; 隐藏标记符
 #+end_src
 
 **** markdown-preview
 #+begin_src emacs-lisp
   (use-package markdown-preview-mode
   :ensure t
+  :defer t
   :commands markdown-preview
   :config
   (setq markdown-preview-stylesheets
-        '("~/.emacs.d/css/github-markdown.css"))
+	'("~/.emacs.d/css/github-markdown.css"))
   )
 
 #+end_src
@@ -497,6 +513,7 @@ poly
 **** 主体
 #+begin_src emacs-lisp
   (use-package polymode
+    :defer t
     :ensure t)
 #+end_src
 **** provide
@@ -533,15 +550,17 @@ rust
 #+begin_src emacs-lisp
   (use-package flycheck
     :ensure t
+    :defer t
     :config
     (setq truncate-lines nil) ;自动换行
-    :init (global-flycheck-mode)
+;    :init (global-flycheck-mode)
     )
 #+end_src
 **** flycheck-rust
 #+begin_src emacs-lisp
   (use-package flycheck-rust
   :ensure t
+  :defer t
   )
 #+end_src
 **** provide
@@ -557,8 +576,8 @@ rust
 **** python-mode
 #+begin_src emacs-lisp
   (use-package python-mode
-  :defer t
   :ensure t
+  :defer t
   )
 #+end_src
 
@@ -574,8 +593,10 @@ rust
 
 **** yaml-mode
 #+begin_src emacs-lisp
-    (use-package yaml-mode
-      :ensure t)
+  (use-package yaml-mode
+    :ensure t
+    :defer t
+    )
 #+end_src
 
 **** provide
@@ -591,8 +612,9 @@ rust
 **** maxima
 #+begin_src emacs-lisp
   (use-package maxima
+    :ensure t
     :defer t
-    :ensure t) 
+    ) 
 #+end_src
 
 **** provide
@@ -607,8 +629,10 @@ rust
 
 **** dockerfile-mode
 #+begin_src emacs-lisp
-    (use-package dockerfile-mode
-      :ensure t)
+  (use-package dockerfile-mode
+    :ensure t
+    :defer t
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -625,6 +649,7 @@ rime输入法 输入法在rime分支
   ;; popup
   (use-package popup
     :ensure t
+    :defer t
     )
 #+end_src
 
@@ -632,6 +657,7 @@ rime输入法 输入法在rime分支
 #+begin_src emacs-lisp
   (use-package rime
   :ensure t
+  :defer t
   :custom
   (default-input-method "rime")
   (rime-show-candidate 'popup)
@@ -651,6 +677,7 @@ rime输入法 输入法在rime分支
 #+begin_src emacs-lisp
   (use-package ace-window
   :ensure t
+  :defer t
   :bind
   ("C-x o" . ace-window)
   )
@@ -702,40 +729,41 @@ rime输入法 输入法在rime分支
 ~embark~
 **** embark主体
 #+begin_src emacs-lisp
-(use-package marginalia
-  :ensure t
-  :config
-  (marginalia-mode))
+  (use-package marginalia
+    :ensure t
+    :defer t
+    :config
+    (marginalia-mode))
 
-(use-package embark
-  :ensure t
+  (use-package embark
+    :ensure t
+    :defer t
+    :bind
+    (("C-." . embark-act)         ;; pick some comfortable binding
+     ("C-;" . embark-dwim)        ;; good alternative: M-.
+     ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
 
-  :bind
-  (("C-." . embark-act)         ;; pick some comfortable binding
-   ("C-;" . embark-dwim)        ;; good alternative: M-.
-   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+    :init
 
-  :init
+    ;; Optionally replace the key help with a completing-read interface
+  ;;  (setq prefix-help-command #'embark-prefix-help-command)
 
-  ;; Optionally replace the key help with a completing-read interface
-;;  (setq prefix-help-command #'embark-prefix-help-command)
+    ;; Show the Embark target at point via Eldoc. You may adjust the
+    ;; Eldoc strategy, if you want to see the documentation from
+    ;; multiple providers. Beware that using this can be a little
+    ;; jarring since the message shown in the minibuffer can be more
+    ;; than one line, causing the modeline to move up and down:
 
-  ;; Show the Embark target at point via Eldoc. You may adjust the
-  ;; Eldoc strategy, if you want to see the documentation from
-  ;; multiple providers. Beware that using this can be a little
-  ;; jarring since the message shown in the minibuffer can be more
-  ;; than one line, causing the modeline to move up and down:
+    ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+    ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
 
-  ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
-  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+    :config
 
-  :config
-
-  ;; Hide the mode line of the Embark live/completions buffers
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist
+		 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+		   nil
+		   (window-parameters (mode-line-format . none)))))
 
 
 #+end_src
@@ -749,9 +777,11 @@ rime输入法 输入法在rime分支
 :HEADER-ARGS: :tangle lisp/init-whichkey.el :mkdirp yes
 :END:
 **** whichkey
+显示快捷键
 #+begin_src emacs-lisp
   (use-package which-key
   :ensure t
+  :defer t
   :init (which-key-mode)
   )
 #+end_src
@@ -761,6 +791,7 @@ rime输入法 输入法在rime分支
 #+end_src
 
 *** init-undo-tree.el
+undotree回溯
 :PROPERTIES:
 :HEADER-ARGS: :tangle lisp/init-undo-tree.el :mkdirp yes
 :END:
@@ -770,6 +801,7 @@ rime输入法 输入法在rime分支
   (use-package undo-tree
   :ensure t
   :hook (after-init . global-undo-tree-mode)
+  :defer t
   :config
   ;; don't save undo history to local files
   (setq undo-tree-auto-save-history nil)
@@ -787,18 +819,19 @@ rime输入法 输入法在rime分支
 移动增强 删除增强等
 **** crux
 #+begin_src emacs-lisp
-(use-package crux
-  :ensure t
-  :bind (("C-a" . crux-move-beginning-of-line)
-         ("C-x 4 t" . crux-transpose-windows)
-         ("C-x K" . crux-kill-other-buffers)
-         ("C-k" . crux-smart-kill-line)
-         ("C-x DEL" . crux-kill-line-backwards))
-  :config
-  (crux-with-region-or-buffer indent-region)
-  (crux-with-region-or-buffer untabify)
-  (crux-with-region-or-point-to-eol kill-ring-save)
-  (defalias 'rename-file-and-buffer #'crux-rename-file-and-buffer))  
+  (use-package crux
+    :ensure t
+    :defer t
+    :bind (("C-a" . crux-move-beginning-of-line)
+	   ("C-x 4 t" . crux-transpose-windows)
+	   ("C-x K" . crux-kill-other-buffers)
+	   ("C-k" . crux-smart-kill-line)
+	   ("C-x DEL" . crux-kill-line-backwards))
+    :config
+    (crux-with-region-or-buffer indent-region)
+    (crux-with-region-or-buffer untabify)
+    (crux-with-region-or-point-to-eol kill-ring-save)
+    (defalias 'rename-file-and-buffer #'crux-rename-file-and-buffer))  
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -814,6 +847,7 @@ rime输入法 输入法在rime分支
 #+begin_src emacs-lisp
   (use-package keycast
     :ensure t
+    :defer t
     :config
     (progn
       (add-to-list 'global-mode-string '("" keycast-mode-line))
@@ -832,7 +866,9 @@ rime输入法 输入法在rime分支
 **** tramp
 #+begin_src emacs-lisp
   (use-package tramp
-  :ensure t)
+  :ensure t
+  :defer t
+  )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -845,25 +881,28 @@ rime输入法 输入法在rime分支
 :END:
 ~git~
 **** magit
+git管理器
 #+begin_src emacs-lisp
   (use-package magit
     :defer t
     :ensure t)
 #+end_src
 **** git-gutter
+git状态显示
 #+begin_src emacs-lisp
   (use-package git-gutter
-    :defer t
     :ensure t
+    :defer t
     :config (global-git-gutter-mode +1))
 #+end_src
-**** balmer
+**** blamer
+git提交显示
 #+begin_src emacs-lisp
   (use-package blamer
   :ensure t
   :defer 20
   :custom
-  (blamer-idle-time 1) ; 延迟时间
+  (blamer-idle-time 2) ; 延迟时间
   (blamer-min-offset 70)
   :custom-face
   (blamer-face ((t :foreground "#7a88cf"
