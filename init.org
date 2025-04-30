@@ -134,6 +134,8 @@
   (require 'init-ace-window)
   ;; treemacs
   (require 'init-treemacs)
+  ;; battery
+  (require 'init-battery)
 #+end_src
 ** provide
 #+begin_src emacs-lisp
@@ -721,6 +723,26 @@ rime输入法 输入法在rime分支
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-treemacs)
+#+end_src
+
+*** init-battery.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-battery.el :mkdirp yes
+:END:
+电池状态
+**** fancy-battery
+#+begin_src emacs-lisp
+  (use-package fancy-battery
+  :ensure t
+  :defer t
+  :hook (after-init . fancy-battery-mode)
+  :config
+  (setq fancy-battery-show-percentage t)
+  )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-battery)
 #+end_src
 ** 功能配置
 *** init-embark.el
