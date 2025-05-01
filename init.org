@@ -876,7 +876,7 @@ undotree回溯
 #+begin_src emacs-lisp
   (use-package keycast
     :ensure t
-    :defer t
+    :defer 3
     :config
     (progn
       (add-to-list 'global-mode-string '("" keycast-mode-line))
