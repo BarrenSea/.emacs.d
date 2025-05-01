@@ -73,30 +73,33 @@
 *** 模式
 #+begin_src emacs-lisp
 
-    ;; org-mode
-    (require 'init-org)
+  ;; org-mode
+  (require 'init-org)
 
-    ;; markdown-mode
-    (require 'init-markdown)
+  ;; markdown-mode
+  (require 'init-markdown)
 
-    ;; rust
-    (require 'init-rust)
+  ;; rust
+  (require 'init-rust)
 
 
   ;; flycheck
-    (require 'init-flycheck)
+  (require 'init-flycheck)
 
-    ;; python
-    (require 'init-python)
+  ;; python
+  (require 'init-python)
 
-    ;; yaml
-    (require 'init-yaml)
+  ;; yaml
+  (require 'init-yaml)
 
-    ;; maxima
-    (require 'init-maxima)
+  ;; maxima
+  (require 'init-maxima)
 
-   ;; docker
+  ;; docker
   (require 'init-docker)
+
+  ;; gnuplot
+  (require 'init-gnuplot)
 #+end_src
 *** 功能
 #+begin_src emacs-lisp
@@ -456,7 +459,6 @@ markdown
 #+end_src
 **** org-fragtog
 #+begin_src emacs-lisp
-  
   ;; 显示latex公式
   (use-package org-fragtog
     :ensure t
@@ -641,29 +643,36 @@ rust
 #+begin_src emacs-lisp
   (provide 'init-docker)
 #+end_src
+
+*** init-gnuplot.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-gnuplot.el :mkdirp yes
+:END:
+**** gnuplot
+#+begin_src emacs-lisp
+  (use-package gnuplot
+    :ensure t
+    :defer t
+    )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-gnuplot)
+#+end_src
 ** 输入法
 *** init-rime.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle lisp/init-rime.el :mkdirp yes
 :END:
 rime输入法 输入法在rime分支
-**** popup
-#+begin_src emacs-lisp
-  ;; popup
-  (use-package popup
-    :ensure t
-    :defer t
-    )
-#+end_src
-
 **** rime主体
 #+begin_src emacs-lisp
   (use-package rime
-  :ensure t
-  :defer t
-  :custom
-  (default-input-method "rime")
-  (rime-show-candidate 'popup)
+    :ensure t
+    :defer t
+    :custom
+    (default-input-method "rime")
+    (rime-show-candidate 'sidewindow)
   )
 #+end_src
 **** provide
@@ -730,14 +739,11 @@ rime输入法 输入法在rime分支
 :HEADER-ARGS: :tangle lisp/init-battery.el :mkdirp yes
 :END:
 电池状态
-**** fancy-battery
+**** battery
 #+begin_src emacs-lisp
-  (use-package fancy-battery
-  :ensure t
+  (use-package battery
   :defer t
-  :hook (after-init . fancy-battery-mode)
-  :config
-  (setq fancy-battery-show-percentage t)
+  :hook (after-init . display-battery-mode)
   )
 #+end_src
 **** provide
