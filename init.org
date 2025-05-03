@@ -824,10 +824,10 @@ rime输入法 输入法在rime分支
 #+end_src
 
 *** init-undo-tree.el
-undotree回溯
 :PROPERTIES:
 :HEADER-ARGS: :tangle lisp/init-undo-tree.el :mkdirp yes
 :END:
+undotree回溯
 
 **** undo-tree
 #+begin_src emacs-lisp
