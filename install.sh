@@ -1,19 +1,23 @@
-#!/bin/sh
-TMP_DIR="/tmp"
+#!/bin/bash
+USER_HOME="$HOME"
+PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+echo "${PATH}"
+EMACS_HOME="${USER_HOME}/.emacs.d"
 
-# rime輸入法配置
-rime() {
-    echo "正在安裝rime"
-    git checkout rime
-    echo "切換到rime分支"
-    cp -r rime-data $TMP_DIR
-    echo "复制到TMP_DIR"
-    git checkout main
-    cp -r $TMP_DIR/rime-data ./rime-data
-    echo "复制到主分支"
-    rm -rf $TMP_DIR/rime-data
-    echo "删除临时文件"
-}
+if [ -d "$EMACS_HOME" ]; then
+    echo "$TARGET_DIR 已存在，是否覆盖？(y/n)"
+    read -r answer
+    if [[ "$answer" != "y" && "$answer" != "Y" ]]; then
+        echo "操作已取消。"
+        exit 1
+    fi
+    # 删除旧目录
+    rm -rf "$TARGET_DIR"
+fi
+
+echo "Copying ${PATH} Into ${EMACS_HOME}"
+cp -R "$PATH" "$EMACS_HOME"
 
 
-rime
+
+

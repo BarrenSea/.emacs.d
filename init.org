@@ -140,6 +140,10 @@
   ;; battery
   (require 'init-battery)
 #+end_src
+** 垃圾处理开启
+#+begin_src emacs-lisp
+  (add-hook 'after-init-hook #'garbage-collect t)
+#+end_src
 ** provide
 #+begin_src emacs-lisp
   (provide 'init)
