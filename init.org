@@ -20,6 +20,10 @@
 :HEADER-ARGS: :tangle init.el
 :END:
 =init.el=
+** Desktop
+#+begin_src emacs-lisp
+  (desktop-save-mode 1)
+#+end_src
 ** 垃圾处理
 #+begin_src emacs-lisp
   (setq gc-cons-percentage 0.5
@@ -117,6 +121,8 @@
   (require 'init-keycast)
   ;; tramp
   (require 'init-tramp)
+  ;; aira2
+  (require 'init-aria2)
 #+end_src
 *** git
 #+begin_src emacs-lisp
@@ -906,6 +912,22 @@ undotree回溯
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-tramp)
+#+end_src
+*** init-aria2.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-aria2.el :mkdirp yes
+:END:
+aria2控制
+**** aria2
+#+begin_src emacs-lisp
+  (use-package aria2
+    :ensure t
+    :defer t
+   )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-aria2)
 #+end_src
 ** git配置
 *** init-git.el
