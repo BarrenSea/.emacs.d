@@ -980,11 +980,19 @@ git提交显示
 主题设置
 **** kaolin-themes
 #+begin_src emacs-lisp
-  (use-package kaolin-themes
-    :ensure t
-    :config
-    (load-theme 'kaolin-dark t)
-    (kaolin-treemacs-theme))
+  ;; (use-package kaolin-themes
+  ;;   :ensure t
+  ;;   :config
+  ;;   (load-theme 'kaolin-dark t)
+  ;;   (kaolin-treemacs-theme))
+#+end_src
+**** atom-dark
+#+begin_src emacs-lisp
+  (use-package atom-dark-theme
+     :ensure t
+     :config
+     (load-theme 'atom-dark t)
+     )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
