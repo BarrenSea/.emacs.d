@@ -20,10 +20,10 @@
 :HEADER-ARGS: :tangle init.el
 :END:
 =init.el=
-** Desktop
-#+begin_src emacs-lisp
-  (desktop-save-mode 1)
-#+end_src
+# ** Desktop
+# #+begin_src emacs-lisp
+#   (desktop-save-mode 1)
+# #+end_src
 ** 垃圾处理
 #+begin_src emacs-lisp
   (setq gc-cons-percentage 0.5
@@ -69,6 +69,9 @@
 
   ;; benchmark
   (require 'init-benchmark)
+
+  ;; easysession
+  (require 'init-easysession)
 #+end_src
 *** 输入法
 #+begin_src emacs-lisp
@@ -104,6 +107,12 @@
 
   ;; gnuplot
   (require 'init-gnuplot)
+
+  ;; nov
+  (require 'init-nov)
+
+  ;; sphinx
+  (require 'init-sphinx)
 #+end_src
 *** 功能
 #+begin_src emacs-lisp
@@ -336,6 +345,37 @@
 #+begin_src emacs-lisp
   (provide 'init-benchmark)
 #+end_src
+
+*** init-easysession.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-easysession.el :mkdirp yes
+:END:
+
+**** easysession
+#+begin_src emacs-lisp
+  (use-package easysession
+  :ensure t
+  :defer t
+  :commands (easysession-switch-to
+             easysession-save-as
+             easysession-save-mode
+             easysession-load-including-geometry)
+  :bind
+  ("C-c l" . easysession-switch-to)
+  ("C-c s" . easysession-save-as)
+  :custom
+  (easysession-mode-line-misc-info t)  ; Display the session in the modeline
+  (easysession-save-interval (* 10 60))  ; Save every 10 minutes
+
+  :init
+  (add-hook 'emacs-startup-hook #'easysession-load-including-geometry 102)
+  (add-hook 'emacs-startup-hook #'easysession-save-mode 103))
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-easysession)
+#+end_src
+
 ** 模式配置
 *** init-company.el
 :PROPERTIES:
@@ -668,6 +708,39 @@ rust
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-gnuplot)
+#+end_src
+
+*** init-nov.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-nov.el :mkdirp yes
+:END:
+**** nov
+#+begin_src emacs-lisp
+  (use-package nov
+    :ensure t
+    :defer t
+    )
+#+end_src
+
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-nov)
+#+end_src
+
+*** init-sphinx.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-sphinx.el :mkdirp yes
+:END:
+**** sphinx-doc
+#+begin_src emacs-lisp
+  (use-package sphinx-mode
+    :ensure t
+    :defer t
+    )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-sphinx)
 #+end_src
 ** 输入法
 *** init-rime.el
