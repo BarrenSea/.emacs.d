@@ -15,6 +15,9 @@
 
 ** org
 | M-o | 'org-insert-structure-template | 快速插入代码块 |
+
+** hydra
+| C-t |   |   |
 * init.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle init.el
@@ -51,6 +54,11 @@
     :config
   ;; To disable collection of benchmark data after init is done.
     (add-hook 'after-init-hook 'benchmark-init/deactivate))
+#+end_src
+** unset-key
+#+begin_src emacs-lisp
+  (global-unset-key (kbd "C-x C-b")) ;; bufferlist换成ibuffer
+  (global-unset-key (kbd "C-t"))  ;; hydra
 #+end_src
 ** 配置导入
 *** 变量
@@ -113,6 +121,9 @@
 
   ;; sphinx
   (require 'init-sphinx)
+
+  ;; uniline
+  (require 'init-uniline)
 #+end_src
 *** 功能
 #+begin_src emacs-lisp
@@ -132,6 +143,8 @@
   (require 'init-tramp)
   ;; aira2
   (require 'init-aria2)
+  ;; hydra
+  (require 'init-hydra)
 #+end_src
 *** git
 #+begin_src emacs-lisp
@@ -154,6 +167,8 @@
   (require 'init-treemacs)
   ;; battery
   (require 'init-battery)
+  ;; zoom
+  (require 'init-zoom)
 #+end_src
 ** 垃圾处理开启
 #+begin_src emacs-lisp
@@ -194,7 +209,11 @@
  ;; If there is more than one, they won't work right.
  '(region ((t (:extend t :background "cornflowerblue" :foreground "#bebec4")))))
 #+end_src
-
+** zoom
+#+begin_src emacs-lisp
+(custom-set-variables
+ '(zoom-mode t))  
+#+end_src
 * lisp
 ** 通用配置
 *** default-set.el
@@ -280,7 +299,7 @@
 :END:
 **** bind
 #+begin_src emacs-lisp
-  (global-unset-key (kbd "C-x C-b"))
+  
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 **** 配置
@@ -731,6 +750,7 @@ rust
 :PROPERTIES:
 :HEADER-ARGS: :tangle lisp/init-sphinx.el :mkdirp yes
 :END:
+文档生成器
 **** sphinx-doc
 #+begin_src emacs-lisp
   (use-package sphinx-mode
@@ -741,6 +761,24 @@ rust
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-sphinx)
+#+end_src
+
+*** init-uniline.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-uniline.el :mkdirp yes
+:END:
+unicode绘图
+**** uniline
+#+begin_src emacs-lisp
+  (use-package uniline
+    :ensure t
+    :defer t
+    )
+
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-uniline)
 #+end_src
 ** 输入法
 *** init-rime.el
@@ -832,6 +870,22 @@ rime输入法 输入法在rime分支
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-battery)
+#+end_src
+
+*** init-zoom.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-zoom.el :mkdirp yes
+:END:
+强制固定和自动平衡布局来管理窗口大小，其中当前选定的窗口根据zoom-size其调整大小
+**** zoom
+#+begin_src emacs-lisp
+  (use-package zoom
+    :ensure t
+    :defer t)
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-zoom)
 #+end_src
 ** 功能配置
 *** init-embark.el
@@ -1001,6 +1055,56 @@ aria2控制
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-aria2)
+#+end_src
+*** init-hydra.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-hydra.el :mkdirp yes
+:END:
+hydra快捷键管理
+**** hydra
+#+begin_src emacs-lisp
+  (use-package hydra
+    :ensure t
+    :defer t
+    )
+#+end_src
+**** hydra_config
+#+begin_src emacs-lisp
+  (defhydra hydra-navigation ()
+    "
+    _p_/_k_: Up (C-p)   _b_/_h_: Back (C-b)  _a_: Home (C-a) _G_: End of Buffer (M->)
+    _f_/_l_: Forward (C-f)   _n_/_j_: Down (C-n)  _e_: End (C-e) _G_: Beginning of Buffer (M-<)
+    _v_: Scroll Up (C-v) _V_: Scroll Down (M-v)
+    "
+
+    ("p" previous-line)
+    ("k" previous-line)
+    
+    ("b" backward-char)
+    ("h" backward-char)
+    
+    ("f" forward-char)
+    ("l" forward-char)
+    
+    ("n" next-line)
+    ("j" next-line)
+    
+    ("a" move-beginning-of-line)
+    ("e" move-end-of-line)
+
+    ("g" beginning-of-buffer)
+    ("G" end-of-buffer)
+
+    ("v" scroll-up-command)
+    ("V" scroll-down-command)
+    
+    ("q" nil "quit")
+    )
+  (global-set-key (kbd "C-t") 'hydra-navigation/body)
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-hydra)
 #+end_src
 ** git配置
 *** init-git.el
