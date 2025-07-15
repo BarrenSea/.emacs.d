@@ -24,3 +24,5 @@ css
 .emacs.desktop
 .emacs.desktop.lock
 easysession
+eln-cache
+eshell

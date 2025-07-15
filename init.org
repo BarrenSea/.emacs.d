@@ -59,6 +59,7 @@
 #+begin_src emacs-lisp
   (global-unset-key (kbd "C-x C-b")) ;; bufferlist换成ibuffer
   (global-unset-key (kbd "C-t"))  ;; hydra
+  (global-unset-key (kbd "M-x")) ;; smex
 #+end_src
 ** 配置导入
 *** 变量
@@ -145,6 +146,8 @@
   (require 'init-aria2)
   ;; hydra
   (require 'init-hydra)
+  ;;smex
+  (require 'init-smex)
 #+end_src
 *** git
 #+begin_src emacs-lisp
@@ -1105,6 +1108,24 @@ hydra快捷键管理
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-hydra)
+#+end_src
+*** init-smex.el
+M-x的增強
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-smex.el :mkdirp yes
+:END:
+**** smex
+#+begin_src emacs-lisp
+    (use-package smex
+      :ensure t
+      :defer t
+  :bind
+  ("M-x" . smex)
+  )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-smex)
 #+end_src
 ** git配置
 *** init-git.el
