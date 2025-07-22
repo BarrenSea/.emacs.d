@@ -196,12 +196,19 @@
 #  (setq rustic-lsp-client 'eglot)		;
 # #+end_src
 
+** nix
+#+begin_src emacs-lisp
+  (setq rime-emacs-module-header-root "/nix/var/nix/profiles/default/include")
+  
+  (setq rime-librime-root "/nix/var/nix/profiles/default/")
+#+end_src
 ** rime
 #+begin_src emacs-lisp
   ;; 用户数据目录
   ;;(setq rime-user-data-dir "~/.emacs.d/rime-data")
   ;; 共享目录
   ;;(setq rime-share-data-dir "~/.config/fctix/rime-data")
+        
 #+end_src
 ** custom-set-face
 #+begin_src emacs-lisp
@@ -1110,10 +1117,10 @@ hydra快捷键管理
   (provide 'init-hydra)
 #+end_src
 *** init-smex.el
-M-x的增強
 :PROPERTIES:
 :HEADER-ARGS: :tangle lisp/init-smex.el :mkdirp yes
 :END:
+M-x的增強
 **** smex
 #+begin_src emacs-lisp
     (use-package smex

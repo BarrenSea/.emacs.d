@@ -18,3 +18,10 @@ $  emerge librime #gentoo
 #+end_src
 
 
+** 注意
+如果使用nixos以外的系统 注释掉
+#+begin_src emacs-lisp
+;  (setq rime-emacs-module-header-root "/nix/var/nix/profiles/default/include")
+  
+;  (setq rime-librime-root "/nix/var/nix/profiles/default/")
+#+end_src
