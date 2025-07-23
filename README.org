@@ -25,3 +25,8 @@ $  emerge librime #gentoo
   
 ;  (setq rime-librime-root "/nix/var/nix/profiles/default/")
 #+end_src
+
+您至少需要安装
+#+begin_src shell
+nix-env -iA nixos.emacs nixos.librime
+#+end_src

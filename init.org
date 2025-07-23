@@ -198,9 +198,9 @@
 
 ** nix
 #+begin_src emacs-lisp
-  (setq rime-emacs-module-header-root "/nix/var/nix/profiles/default/include")
+  (setq rime-emacs-module-header-root "~/.nix-profile/include")
   
-  (setq rime-librime-root "/nix/var/nix/profiles/default/")
+  (setq rime-librime-root "~/.nix-profile/")
 #+end_src
 ** rime
 #+begin_src emacs-lisp
