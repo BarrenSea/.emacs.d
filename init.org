@@ -32,6 +32,20 @@
   (setq gc-cons-percentage 0.5
       gc-cons-threshold (* 128 1024 1024))
 #+end_src
+** 自定义函数
+#+begin_src emacs-lisp
+  (defun show-unicode-at-point-details ()
+  "显示当前光标所在符号的 Unicode 详细信息。"
+  (interactive)
+  (let* ((char (char-after (point)))
+         (name (and char (get-char-code-property char 'name)))
+         (category (and char (get-char-code-property char 'general-category))))
+    (if char
+        (message "字符: %c | Unicode: U+%04X | 名称: %s | 分类: %s"
+                char char (or name "未知") (or category "未知"))
+      (message "光标位置没有字符"))))
+  
+#+end_src
 ** 导入路径
 #+begin_src emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/lisp/")
@@ -182,7 +196,6 @@
 :PROPERTIES:
 :HEADER-ARGS: :tangle custom.el :mkdirp yes
 :END:
-
 用户变量保存处
 
 # ** rustic
@@ -192,7 +205,6 @@
 #  ;; lsp-client
 #  (setq rustic-lsp-client 'eglot)		;
 # #+end_src
-
 ** rime
 #+begin_src emacs-lisp
   ;; 用户数据目录
@@ -213,6 +225,17 @@
 #+begin_src emacs-lisp
 (custom-set-variables
  '(zoom-mode t))  
+#+end_src
+** eww
+#+begin_src emacs-lisp
+;(setq eww-search-prefix "https://www.bing.com/search?q=")
+#+end_src
+** proxy
+#+begin_src emacs-lisp
+(setq url-proxy-services
+      '(("no_proxy" . "^\\(localhost\\|127\\.0\\.0\\.1\\)")
+        ("http" . "127.0.0.1:12334")
+        ("https" . "127.0.0.1:12334")))
 #+end_src
 * lisp
 ** 通用配置
@@ -1070,20 +1093,22 @@ hydra快捷键管理
 #+end_src
 **** hydra_config
 #+begin_src emacs-lisp
-  (defhydra hydra-navigation ()
+  (defhydra hydra-navigation (:color red)
     "
-    _p_/_k_: Up (C-p)   _b_/_h_: Back (C-b)  _a_: Home (C-a) _G_: End of Buffer (M->)
-    _f_/_l_: Forward (C-f)   _n_/_j_: Down (C-n)  _e_: End (C-e) _G_: Beginning of Buffer (M-<)
-    _v_: Scroll Up (C-v) _V_: Scroll Down (M-v)
+    _p_/_k_: Up (C-p)             _h_: Back (C-b)         _a_: Home (C-a)  _G_: End of Buffer (M->)
+    _l_: Forward (C-f)            _n_/_j_: Down (C-n)     _e_: End (C-e)   _G_: Beginning of Buffer (M-<)
+    _v_: Scroll Up (C-v)          _V_: Scroll Down (M-v)  _t_: Show Unicode _o_: ace-window
+    _/_: undo (C-/)               _f_: Forward Word (M-f) _b_: Backward Word (M-b) _r_: set-mark-command
+    _w_: kill-ring-save (M-w)     _y_: yank (M-y)         _x_: delete-char (C-d)
     "
 
     ("p" previous-line)
     ("k" previous-line)
     
-    ("b" backward-char)
+    ("b" backward-word)
     ("h" backward-char)
     
-    ("f" forward-char)
+    ("f" forward-word)
     ("l" forward-char)
     
     ("n" next-line)
@@ -1097,6 +1122,17 @@ hydra快捷键管理
 
     ("v" scroll-up-command)
     ("V" scroll-down-command)
+
+    ("t" show-unicode-at-point-details)
+
+    ("o" ace-window)
+
+    ("/" undo-tree-undo)
+
+    ("r" set-mark-command)
+    ("w" kill-ring-save)
+    ("y" yank)
+    ("x" delete-char)
     
     ("q" nil "quit")
     )
