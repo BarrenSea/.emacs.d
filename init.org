@@ -73,6 +73,7 @@
 #+begin_src emacs-lisp
   (global-unset-key (kbd "C-x C-b")) ;; bufferlist换成ibuffer
   (global-unset-key (kbd "C-t"))  ;; hydra
+  (global-unset-key (kbd "M-x")) ;; smex
 #+end_src
 ** 配置导入
 *** 变量
@@ -159,6 +160,8 @@
   (require 'init-aria2)
   ;; hydra
   (require 'init-hydra)
+  ;;smex
+  (require 'init-smex)
 #+end_src
 *** git
 #+begin_src emacs-lisp
@@ -205,12 +208,20 @@
 #  ;; lsp-client
 #  (setq rustic-lsp-client 'eglot)		;
 # #+end_src
+
+** nix
+#+begin_src emacs-lisp
+  (setq rime-emacs-module-header-root "~/.nix-profile/include")
+  
+  (setq rime-librime-root "~/.nix-profile/")
+#+end_src
 ** rime
 #+begin_src emacs-lisp
   ;; 用户数据目录
   ;;(setq rime-user-data-dir "~/.emacs.d/rime-data")
   ;; 共享目录
   ;;(setq rime-share-data-dir "~/.config/fctix/rime-data")
+        
 #+end_src
 ** custom-set-face
 #+begin_src emacs-lisp
@@ -1141,6 +1152,24 @@ hydra快捷键管理
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-hydra)
+#+end_src
+*** init-smex.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-smex.el :mkdirp yes
+:END:
+M-x的增強
+**** smex
+#+begin_src emacs-lisp
+    (use-package smex
+      :ensure t
+      :defer t
+  :bind
+  ("M-x" . smex)
+  )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-smex)
 #+end_src
 ** git配置
 *** init-git.el

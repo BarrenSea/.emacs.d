@@ -17,6 +17,7 @@ $  cargo install typst-cli
 $  emerge librime #gentoo
 #+end_src
 
+
 ** 改动
 *** Hydra
 Hydra加入了移动方式 ~C-t~
@@ -26,3 +27,18 @@ _f_/_l_: Forward (C-f)   _n_/_j_: Down (C-n)  _e_: End (C-e)   _G_: Beginning of
 _v_: Scroll Up (C-v)     _V_: Scroll Down (M-v)
 #+end_src
 *** 加入函数
+
+
+** 注意
+如果使用nixos以外的系统 注释掉
+#+begin_src emacs-lisp
+;  (setq rime-emacs-module-header-root "/nix/var/nix/profiles/default/include")
+  
+;  (setq rime-librime-root "/nix/var/nix/profiles/default/")
+#+end_src
+
+您至少需要安装
+#+begin_src shell
+nix-env -iA nixos.emacs nixos.librime
+#+end_src
+
