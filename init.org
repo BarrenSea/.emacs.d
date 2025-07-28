@@ -17,7 +17,8 @@
 | M-o | 'org-insert-structure-template | 快速插入代码块 |
 
 ** hydra
-| C-t |   |   |
+| C-t n | 移动 |   |
+| C-t g | gdb  |   |
 * init.el
 :PROPERTIES:
 :HEADER-ARGS: :tangle init.el
@@ -103,9 +104,8 @@
 *** 模式
 #+begin_src emacs-lisp
 
-  ;; org-mode
   (require 'init-org)
-
+  ;; org-mode
   ;; markdown-mode
   (require 'init-markdown)
 
@@ -139,6 +139,12 @@
 
   ;; uniline
   (require 'init-uniline)
+
+  ;; gnus
+  (require 'init-gnus)
+
+  ;; dired
+  (require 'init-dired)
 #+end_src
 *** 功能
 #+begin_src emacs-lisp
@@ -187,6 +193,10 @@
   ;; zoom
   (require 'init-zoom)
 #+end_src
+*** 游戏
+#+begin_src emacs-lisp
+  (require 'init-game)
+#+end_src
 ** 垃圾处理开启
 #+begin_src emacs-lisp
   (add-hook 'after-init-hook #'garbage-collect t)
@@ -211,9 +221,9 @@
 
 ** nix
 #+begin_src emacs-lisp
-  (setq rime-emacs-module-header-root "~/.nix-profile/include")
-  
-  (setq rime-librime-root "~/.nix-profile/")
+  ;; (setq rime-emacs-module-header-root "~/.nix-profile/include")
+
+  ;; (setq rime-librime-root "~/.nix-profile/")
 #+end_src
 ** rime
 #+begin_src emacs-lisp
@@ -344,41 +354,43 @@
 **** ibuffer主体
 #+begin_src emacs-lisp
   (setq ibuffer-saved-filter-groups
-      '(("ibuffer"
-	 ("rust"
-	  (used-mode . rust-mode))
-	 ("python"
-	  (used-mode . python-mode))
-	 ("org_note"
-	  (used-mode . org-mode))
-	 ("typst"
-	  (used-mode . typst--markup-mode))
-	 ("elisp"
-	  (used-mode . emacs-lisp-mode))
-	 ("haskell"
-	  (used-mode . haskell-mode))
-	 ("matrix"
-	  (name . "Ement*"))
-	 ("irc query"
-	  (used-mode . circe-query-mode))
-	 ("dired"
-	  (used-mode . dired-mode))
-	 ("conf"
-	  (used-mode . conf-unix-mode))
-	 ("toml"
-	  (used-mode . conf-toml-mode))
-	 ("markdown"
-	  (used-mode . markdown-mode))
-	 ("docker-compose"
-	  (name . "docker-compose"))
-	 ("message"
-	  (used-mode . messages-buffer-mode))
-	 ("magit"
-	  (name . "magit*"))
-	 ("special"
-	  (used-mode . special-mode))
-	 ("irc"
-	  (used-mode . circe-channel-mode)))))
+        '(("ibuffer"
+  	 ("eww"
+  	  (used-mode . eww-mode))
+  	 ("rust"
+  	  (used-mode . rust-mode))
+  	 ("python"
+  	  (used-mode . python-mode))
+  	 ("org_note"
+  	  (used-mode . org-mode))
+  	 ("typst"
+  	  (used-mode . typst--markup-mode))
+  	 ("elisp"
+  	  (used-mode . emacs-lisp-mode))
+  	 ("haskell"
+  	  (used-mode . haskell-mode))
+  	 ("matrix"
+  	  (name . "Ement*"))
+  	 ("irc query"
+  	  (used-mode . circe-query-mode))
+  	 ("dired"
+  	  (used-mode . dired-mode))
+  	 ("conf"
+  	  (used-mode . conf-unix-mode))
+  	 ("toml"
+  	  (used-mode . conf-toml-mode))
+  	 ("markdown"
+  	  (used-mode . markdown-mode))
+  	 ("docker-compose"
+  	  (name . "docker-compose"))
+  	 ("message"
+  	  (used-mode . messages-buffer-mode))
+  	 ("magit"
+  	  (name . "magit*"))
+  	 ("special"
+  	  (used-mode . special-mode))
+  	 ("irc"
+  	  (used-mode . circe-channel-mode)))))
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -814,6 +826,71 @@ unicode绘图
 #+begin_src emacs-lisp
   (provide 'init-uniline)
 #+end_src
+
+*** init-gnus.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-gnus.el :mkdirp yes
+:END:
+GNUS配置
+
+**** gnus
+#+begin_src emacs-lisp
+  ;; (setq gnus-startup-file "~/Gnus/.newsrc")                  ;初始文件
+  ;; (setq gnus-default-directory "~/Gnus/")                    ;默认目录
+  ;; (setq gnus-home-directory "~/Gnus/")                       ;主目录
+  ;; (setq gnus-dribble-directory "~/Gnus/")                    ;恢复目录
+  ;; (setq gnus-directory "~/Gnus/News/")                       ;新闻组的存储目录
+  ;; (setq gnus-article-save-directory "~/Gnus/News/")          ;文章保存目录
+  ;; (setq gnus-kill-files-directory "~/Gnus/News/trash/")      ;文件删除目录
+  ;; (setq gnus-agent-directory "~/Gnus/News/agent/")           ;代理目录
+  ;; (setq gnus-cache-directory "~/Gnus/News/cache/")           ;缓存目录
+  ;; (setq gnus-cache-active-file "~/Gnus/News/cache/active")   ;缓存激活文件
+  ;; (setq message-directory "~//Gnus/Mail/")                    ;邮件的存储目录
+  ;; (setq message-auto-save-directory "~/Mail/drafts")    ;自动保存的目录
+  ;; (setq mail-source-directory "~/Gnus/Mail/incoming")        ;邮件的源目录
+  ;; (setq nnmail-message-id-cache-file "~/Gnus/.nnmail-cache") ;nnmail的消息ID缓存
+  ;; (setq nnml-newsgroups-file "~/Gnus/Mail/newsgroup")        ;邮件新闻组解释文件
+  ;; (setq nntp-marks-directory "~/Gnus/News/marks")            ;nntp组存储目录
+
+
+#+end_src
+**** mail
+#+begin_src emacs-lisp
+  ;;   (setq user-full-name "Donjuanplatinum")
+  ;;   (setq user-mail-address "donjuan@donplat.top")
+
+  ;; (setq 
+  ;;     ;; message-send-mail-function 'smtpmail-send-it
+  ;;        smtpmail-starttls-credentials '(("smtp.donplat.top" 587 nil nil))
+  ;;        smtpmail-auth-credentials '(("smtp.donplat.top" 587 "donjuan@donplat.top" nil))      
+  ;;        smtpmail-default-smtp-server "smtp.donplat.top"      
+  ;;        smtpmail-smtp-server "smtp.donplat.top"
+  ;;        smtpmail-smtp-service 587      
+  ;;     ;; smtpmail-local-domain "yourcompany.com"
+  ;;        )
+
+  ;; (setq send-mail-function 'smtpmail-send-it
+  ;;       ;; message-send-mail-function 'smtpmail-send-it)
+
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-gnus)
+#+end_src
+
+*** init-dired.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-dired.el :mkdirp yes
+:END:
+dired模式配置
+**** dired
+#+begin_src emacs-lisp
+            
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-dired)
+#+end_src
 ** 输入法
 *** init-rime.el
 :PROPERTIES:
@@ -1102,7 +1179,7 @@ hydra快捷键管理
     :defer t
     )
 #+end_src
-**** hydra_config
+**** hydra_navi
 #+begin_src emacs-lisp
   (defhydra hydra-navigation (:color red)
     "
@@ -1148,6 +1225,10 @@ hydra快捷键管理
     ("q" nil "quit")
     )
   (global-set-key (kbd "C-t") 'hydra-navigation/body)
+#+end_src
+**** hydra_gdb
+#+begin_src emacs-lisp
+  
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1300,6 +1381,22 @@ git提交显示
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-dashboard)
+#+end_src
+** 游戏
+*** init-game.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-game.el :mkdirp yes
+:END:
+游戏
+**** 2048
+#+begin_src emacs-lisp
+  (use-package 2048-game
+    :ensure t
+    :defer t)
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-game)
 #+end_src
 * css
 ** markdown
