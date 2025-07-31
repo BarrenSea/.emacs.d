@@ -94,8 +94,8 @@
   ;; benchmark
   (require 'init-benchmark)
 
-  ;; easysession
-  (require 'init-easysession)
+  ;; ;; easysession
+  ;; (require 'init-easysession)
 #+end_src
 *** 输入法
 #+begin_src emacs-lisp
@@ -168,6 +168,8 @@
   (require 'init-hydra)
   ;;smex
   (require 'init-smex)
+  ;; gpg
+  (require 'init-gpg)
 #+end_src
 *** git
 #+begin_src emacs-lisp
@@ -1252,6 +1254,16 @@ M-x的增強
 #+begin_src emacs-lisp
   (provide 'init-smex)
 #+end_src
+*** init-gpg.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-gpg.el :mkdirp yes
+:END:
+gpg的集成
+
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-gpg)
+#+end_src
 ** git配置
 *** init-git.el
 :PROPERTIES:
@@ -1311,11 +1323,19 @@ git提交显示
 #+end_src
 **** atom-dark
 #+begin_src emacs-lisp
-  (use-package atom-dark-theme
-     :ensure t
-     :config
-     (load-theme 'atom-dark t)
-     )
+  ;; (use-package atom-dark-theme
+  ;;    :ensure t
+  ;;    :config
+  ;;    (load-theme 'atom-dark t)
+  ;;    )
+#+end_src
+**** modus
+#+begin_src emacs-lisp
+   (use-package modus-themes
+      :ensure t
+      :config
+      (load-theme modus-vivendi-tinted t)
+      )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
