@@ -75,6 +75,7 @@
   (global-unset-key (kbd "C-x C-b")) ;; bufferlist换成ibuffer
   (global-unset-key (kbd "C-t"))  ;; hydra
   (global-unset-key (kbd "M-x")) ;; smex
+  (global-unset-key (kbd "C-SPC")) ;; smex
 #+end_src
 ** 配置导入
 *** 变量
@@ -170,6 +171,8 @@
   (require 'init-smex)
   ;; gpg
   (require 'init-gpg)
+  ;; shell
+  (require 'init-shell)
 #+end_src
 *** git
 #+begin_src emacs-lisp
@@ -194,6 +197,8 @@
   (require 'init-battery)
   ;; zoom
   (require 'init-zoom)
+  ;; windsize
+  (require 'init-windsize)
 #+end_src
 *** 游戏
 #+begin_src emacs-lisp
@@ -246,8 +251,8 @@
 #+end_src
 ** zoom
 #+begin_src emacs-lisp
-(custom-set-variables
- '(zoom-mode t))  
+  ;; (custom-set-variables
+  ;;  '(zoom-mode t))  
 #+end_src
 ** eww
 #+begin_src emacs-lisp
@@ -259,6 +264,23 @@
       '(("no_proxy" . "^\\(localhost\\|127\\.0\\.0\\.1\\)")
         ("http" . "127.0.0.1:12334")
         ("https" . "127.0.0.1:12334")))
+#+end_src
+** custom-veriable
+#+begin_src emacs-lisp
+     (custom-set-variables
+    ;; custom-set-variables was added by Custom.
+    ;; If you edit it by hand, you could mess it up, so be careful.
+    ;; Your init file should contain only one such instance.
+    ;; If there is more than one, they won't work right.
+    '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
+    '(shell-pop-term-shell "/bin/bash")
+    ;; '(shell-pop-window-size 30)
+    ;; '(shell-pop-full-span t)
+    ;; '(shell-pop-window-position "bottom")
+    ;; '(shell-pop-autocd-to-working-dir t)
+    ;; '(shell-pop-restore-window-configuration t)
+    ;; '(shell-pop-cleanup-buffer-at-process-exit t)
+    )
 #+end_src
 * lisp
 ** 通用配置
@@ -273,7 +295,7 @@
 #+begin_src emacs-lisp
   
 ;; 使用代理
-(setq my-proxy "127.0.0.1:7890")
+(setq my-proxy "127.0.0.1:12334")
 
   (defun show-proxy ()
     "Show http/https proxy."
@@ -992,13 +1014,34 @@ rime输入法 输入法在rime分支
 强制固定和自动平衡布局来管理窗口大小，其中当前选定的窗口根据zoom-size其调整大小
 **** zoom
 #+begin_src emacs-lisp
-  (use-package zoom
-    :ensure t
-    :defer t)
+  ;; (use-package zoom
+  ;;   :ensure t
+  ;;   :defer t)
 #+end_src
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-zoom)
+#+end_src
+
+*** init-windsize.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-windsize.el :mkdirp yes
+:END:
+**** windsize
+#+begin_src emacs-lisp
+        (use-package windsize
+          :ensure t
+          :defer t
+  	:bind
+  	("C-SPC p" . windsize-up)
+  	("C-SPC n" . windsize-down)
+  	("C-SPC f" . windsize-right)
+  	("C-SPC b" . windsize-left)
+  )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-windsize)
 #+end_src
 ** 功能配置
 *** init-embark.el
@@ -1264,6 +1307,27 @@ gpg的集成
 #+begin_src emacs-lisp
   (provide 'init-gpg)
 #+end_src
+*** init-shell.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-shell.el :mkdirp yes
+:END:
+快速打开shell
+**** shell-pop
+#+begin_src emacs-lisp
+    (use-package shell-pop
+      :ensure t
+      :defer t
+      :config
+      (setq shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
+      (setq shell-pop-term-shell "/bin/bash")
+      :bind
+      ("C-`" . shell-pop)
+  )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-shell)
+#+end_src
 ** git配置
 *** init-git.el
 :PROPERTIES:
@@ -1334,7 +1398,7 @@ git提交显示
    (use-package modus-themes
       :ensure t
       :config
-      (load-theme modus-vivendi-tinted t)
+      (load-theme 'modus-vivendi-tinted t)
       )
 #+end_src
 **** provide
