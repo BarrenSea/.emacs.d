@@ -47,6 +47,18 @@
       (message "光标位置没有字符"))))
   
 #+end_src
+** 邮件设置
+#+begin_src emacs-lisp
+  (if (boundp 'mail-user-agent)
+    (setq mail-user-agent 'wl-user-agent))
+(if (fboundp 'define-mail-user-agent)
+    (define-mail-user-agent
+      'wl-user-agent
+      'wl-user-agent-compose
+      'wl-draft-send
+      'wl-draft-kill
+      'mail-send-hook))
+#+end_src
 ** 导入路径
 #+begin_src emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/lisp/")
@@ -173,6 +185,8 @@
   (require 'init-gpg)
   ;; shell
   (require 'init-shell)
+  ;; wanderlust
+  (require 'init-wanderlust)
 #+end_src
 *** git
 #+begin_src emacs-lisp
@@ -1327,6 +1341,48 @@ gpg的集成
 **** provide
 #+begin_src emacs-lisp
   (provide 'init-shell)
+#+end_src
+*** init-wanderlust.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-wanderlust.el :mkdirp yes
+:END:
+邮件客户端
+**** TODO wanderlust
+#+begin_src emacs-lisp
+    (use-package wl
+      :ensure wanderlust
+      :defer t
+  :init
+  (setq wl-folders-file (expand-file-name ".folder" user-emacs-directory)  ; 设置folder在.emacs.d/.folders
+
+        ; smtp
+        wl-smtp-posting-server "smtp.donplat.top" 
+        wl-smtp-posting-port 587 
+        wl-smtp-posting-user "donjuan@donplat.top" 
+        wl-smtp-authenticate-type "plain" 
+        wl-smtp-connection-type 'starttls 
+        wl-from "donjuan@donplat.top"
+
+        ; imap
+        elmo-imap4-default-user "donjuan@donplat.top" 
+        elmo-imap4-default-server "imap.donplat.top" 
+        elmo-imap4-default-port 993 
+        elmo-imap4-default-authenticate-type 'clear
+        elmo-imap4-default-stream-type 'ssl
+        elmo-passwd-storage-type 'auth-source
+
+         ;; 始终下载电子邮件而无需确认
+        wl-prefetch-threshold nil 
+        wl-message-buffer-prefetch-threshold nil 
+        elmo-message-fetch-threshold nil
+
+        
+        )
+  )
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-wanderlust)
 #+end_src
 ** git配置
 *** init-git.el
@@ -2716,4 +2772,12 @@ git提交显示
 .markdown-body>*:first-child>.heading-element:first-child {
   margin-top: 0 !important;
 }
+#+end_src
+* .folder
+:PROPERTIES:
+:HEADER-ARGS: :tangle .folder :mkdirp yes
+:END:
+wanderlust邮件folder文件
+#+begin_src unix-rc
+  %inbox:"donjuan@donplat.top"/clear@imap.donplat.top:993! "all"
 #+end_src
