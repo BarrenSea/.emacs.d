@@ -1,3 +1,4 @@
+;-*- mode: org -*-
 #+TITLE: Barrensea Emacs
 #+AUTHOR: DonjuanPlatinum in Barrensea
 #+DATE: 2024/6/22
@@ -31,33 +32,37 @@
 ** 垃圾处理
 #+begin_src emacs-lisp
   (setq gc-cons-percentage 0.5
-      gc-cons-threshold (* 128 1024 1024))
+        gc-cons-threshold (* 128 1024 1024))
+#+end_src
+** 自定义变量
+#+begin_src emacs-lisp
+  
 #+end_src
 ** 自定义函数
 #+begin_src emacs-lisp
+    ;;;###autoload
   (defun show-unicode-at-point-details ()
-  "显示当前光标所在符号的 Unicode 详细信息。"
-  (interactive)
-  (let* ((char (char-after (point)))
-         (name (and char (get-char-code-property char 'name)))
-         (category (and char (get-char-code-property char 'general-category))))
-    (if char
-        (message "字符: %c | Unicode: U+%04X | 名称: %s | 分类: %s"
-                char char (or name "未知") (or category "未知"))
-      (message "光标位置没有字符"))))
-  
+    "显示当前光标所在符号的 Unicode 详细信息。"
+    (interactive)
+    (let* ((char (char-after (point)))
+           (name (and char (get-char-code-property char 'name)))
+           (category (and char (get-char-code-property char 'general-category))))
+      (if char
+          (message "字符: %c | Unicode: U+%04X | 名称: %s | 分类: %s"
+                   char char (or name "未知") (or category "未知"))
+        (message "光标位置没有字符"))))
 #+end_src
 ** 邮件设置
 #+begin_src emacs-lisp
   (if (boundp 'mail-user-agent)
-    (setq mail-user-agent 'wl-user-agent))
-(if (fboundp 'define-mail-user-agent)
-    (define-mail-user-agent
-      'wl-user-agent
-      'wl-user-agent-compose
-      'wl-draft-send
-      'wl-draft-kill
-      'mail-send-hook))
+      (setq mail-user-agent 'wl-user-agent))
+  (if (fboundp 'define-mail-user-agent)
+      (define-mail-user-agent
+        'wl-user-agent
+        'wl-user-agent-compose
+        'wl-draft-send
+        'wl-draft-kill
+        'mail-send-hook))
 #+end_src
 ** 导入路径
 #+begin_src emacs-lisp
@@ -68,10 +73,10 @@
 ** 镜像设置
 #+begin_src emacs-lisp
   (setq package-archives '(("gnu-mirror"   . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-			   ("melpa-mirror"  . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-			   ("nongnu-mirror" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/" )
-			   ("org-mirror" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
-			   ))
+  			 ("melpa-mirror"  . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+  			 ("nongnu-mirror" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/" )
+  			 ("org-mirror" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
+  			 ))
 #+end_src
 
 ** benchmark
@@ -79,7 +84,7 @@
   (use-package benchmark-init
     :ensure t
     :config
-  ;; To disable collection of benchmark data after init is done.
+    ;; To disable collection of benchmark data after init is done.
     (add-hook 'after-init-hook 'benchmark-init/deactivate))
 #+end_src
 ** unset-key
@@ -90,6 +95,10 @@
   (global-unset-key (kbd "C-SPC")) ;; smex
 #+end_src
 ** 配置导入
+*** EAF
+#+begin_src emacs-lisp
+  (require 'init-eaf) ; For EAF
+#+end_src
 *** 变量
 #+begin_src emacs-lisp
   ;; custom file
@@ -252,16 +261,16 @@
   ;;(setq rime-user-data-dir "~/.emacs.d/rime-data")
   ;; 共享目录
   ;;(setq rime-share-data-dir "~/.config/fctix/rime-data")
-        
+
 #+end_src
 ** custom-set-face
 #+begin_src emacs-lisp
   (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(region ((t (:extend t :background "cornflowerblue" :foreground "#bebec4")))))
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(region ((t (:extend t :background "cornflowerblue" :foreground "#bebec4")))))
 #+end_src
 ** zoom
 #+begin_src emacs-lisp
@@ -270,33 +279,60 @@
 #+end_src
 ** eww
 #+begin_src emacs-lisp
-;(setq eww-search-prefix "https://www.bing.com/search?q=")
+  					;(setq eww-search-prefix "https://www.bing.com/search?q=")
 #+end_src
 ** proxy
 #+begin_src emacs-lisp
-(setq url-proxy-services
-      '(("no_proxy" . "^\\(localhost\\|127\\.0\\.0\\.1\\)")
-        ("http" . "127.0.0.1:12334")
-        ("https" . "127.0.0.1:12334")))
+  ; (setq url-proxy-services
+  ;       '(("no_proxy" . "^\\(localhost\\|127\\.0\\.0\\.1\\)")
+  ;         ("http" . "127.0.0.1:12334")
+  ;         ("https" . "127.0.0.1:12334")))
 #+end_src
 ** custom-veriable
 #+begin_src emacs-lisp
-     (custom-set-variables
-    ;; custom-set-variables was added by Custom.
-    ;; If you edit it by hand, you could mess it up, so be careful.
-    ;; Your init file should contain only one such instance.
-    ;; If there is more than one, they won't work right.
-    '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
-    '(shell-pop-term-shell "/bin/bash")
-    ;; '(shell-pop-window-size 30)
-    ;; '(shell-pop-full-span t)
-    ;; '(shell-pop-window-position "bottom")
-    ;; '(shell-pop-autocd-to-working-dir t)
-    ;; '(shell-pop-restore-window-configuration t)
-    ;; '(shell-pop-cleanup-buffer-at-process-exit t)
-    )
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
+   '(shell-pop-term-shell "/bin/bash")
+   ;; '(shell-pop-window-size 30)
+   ;; '(shell-pop-full-span t)
+   ;; '(shell-pop-window-position "bottom")
+   ;; '(shell-pop-autocd-to-working-dir t)
+   ;; '(shell-pop-restore-window-configuration t)
+   ;; '(shell-pop-cleanup-buffer-at-process-exit t)
+   )
 #+end_src
 * lisp
+** EAF
+*** init-eaf.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-eaf.el :mkdirp yes
+:END:
+EAF框架
+**** eaf
+#+begin_src emacs-lisp
+    (use-package eaf
+    :load-path "~/.emacs.d/site-lisp/emacs-application-framework"
+    ;; :custom
+    ;; (eaf-browser-continue-where-left-off t)
+    ;; (eaf-browser-enable-adblocker t)
+    ;; (browse-url-browser-function 'eaf-open-browser)
+    ;; :config
+    ;; (defalias 'browse-web #'eaf-open-browser)
+    ;; (eaf-bind-key nil "M-q" eaf-browser-keybinding)
+    )
+#+end_src
+**** modules
+#+begin_src emacs-lisp
+  (require 'eaf-browser)
+#+end_src
+**** provide
+#+begin_src emacs-lisp
+  (provide 'init-eaf)
+#+end_src
 ** 通用配置
 *** default-set.el
 :PROPERTIES:
@@ -307,21 +343,21 @@
 
 **** 代理
 #+begin_src emacs-lisp
-  
-;; 使用代理
-(setq my-proxy "127.0.0.1:12334")
+
+  ;; 使用代理
+  (setq my-proxy "127.0.0.1:12334")
 
   (defun show-proxy ()
     "Show http/https proxy."
     (interactive)
     (if url-proxy-services
-	(message "Current proxy is \"%s\"" my-proxy)
+        (message "Current proxy is \"%s\"" my-proxy)
       (message "No proxy")))
-    (defun set-proxy ()
+  (defun set-proxy ()
     "Set http/https proxy."
     (interactive)
     (setq url-proxy-services `(("http" . ,my-proxy)
-			       ("https" . ,my-proxy)))
+  			     ("https" . ,my-proxy)))
     (show-proxy))
 
   (defun unset-proxy ()
@@ -334,7 +370,7 @@
     "Toggle http/https proxy."
     (interactive)
     (if url-proxy-services
-	(unset-proxy)
+        (unset-proxy)
       (set-proxy)))
 
   (global-set-key (kbd "C-c p") 'toggle-proxy)
@@ -381,7 +417,7 @@
 :END:
 **** bind
 #+begin_src emacs-lisp
-  
+
   (global-set-key (kbd "C-x C-b") 'ibuffer)
 #+end_src
 **** 配置
@@ -457,22 +493,22 @@
 **** easysession
 #+begin_src emacs-lisp
   (use-package easysession
-  :ensure t
-  :defer t
-  :commands (easysession-switch-to
-             easysession-save-as
-             easysession-save-mode
-             easysession-load-including-geometry)
-  :bind
-  ("C-c l" . easysession-switch-to)
-  ("C-c s" . easysession-save-as)
-  :custom
-  (easysession-mode-line-misc-info t)  ; Display the session in the modeline
-  (easysession-save-interval (* 10 60))  ; Save every 10 minutes
+    :ensure t
+    :defer t
+    :commands (easysession-switch-to
+               easysession-save-as
+               easysession-save-mode
+               easysession-load-including-geometry)
+    :bind
+    ("C-c l" . easysession-switch-to)
+    ("C-c s" . easysession-save-as)
+    :custom
+    (easysession-mode-line-misc-info t)  ; Display the session in the modeline
+    (easysession-save-interval (* 10 60))  ; Save every 10 minutes
 
-  :init
-  (add-hook 'emacs-startup-hook #'easysession-load-including-geometry 102)
-  (add-hook 'emacs-startup-hook #'easysession-save-mode 103))
+    :init
+    (add-hook 'emacs-startup-hook #'easysession-load-including-geometry 102)
+    (add-hook 'emacs-startup-hook #'easysession-save-mode 103))
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -490,7 +526,7 @@
   (use-package company
     :ensure t
     :defer t
-;    :init (global-company-mode)
+  					;    :init (global-company-mode)
     :hook
     (prog-mode . company-mode) ; 编程模式启用company-mode
     :config
@@ -502,7 +538,7 @@
 
 **** company-quickhelp
 #+begin_src emacs-lisp
-    ;; 提供上下文帮助
+  ;; 提供上下文帮助
   (use-package company-quickhelp
     :ensure t
     :defer t
@@ -516,7 +552,7 @@
   (use-package company-nginx
     :ensure t
     :defer t
-  )
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -530,7 +566,7 @@ markdown
 
 **** markdown主体
 #+begin_src emacs-lisp
-    ;; 安装 markdown-mode
+  ;; 安装 markdown-mode
   (use-package markdown-mode
     :ensure t
     :defer t
@@ -540,7 +576,7 @@ markdown
     (setq markdown-command "pandoc") ;; 可选：使用 pandoc 作为Markdown 渲染工具
     ;; 配置 Markdown 快捷键
     (bind-key "C-c C-c" 'markdown-command markdown-mode-map)
-  
+
     ;; 自定义 Markdown 编辑器行为
     (setq markdown-fontify-code-blocks-natively t) ;; 高亮代码块
     (setq markdown-enable-math t) ;; 启用数学公式支持
@@ -550,13 +586,13 @@ markdown
 **** markdown-preview
 #+begin_src emacs-lisp
   (use-package markdown-preview-mode
-  :ensure t
-  :defer t
-  :commands markdown-preview
-  :config
-  (setq markdown-preview-stylesheets
-	'("~/.emacs.d/css/github-markdown.css"))
-  )
+    :ensure t
+    :defer t
+    :commands markdown-preview
+    :config
+    (setq markdown-preview-stylesheets
+  	'("~/.emacs.d/css/github-markdown.css"))
+    )
 
 #+end_src
 **** provide
@@ -575,16 +611,16 @@ markdown
 自动展开
 #+begin_src emacs-lisp
   (use-package org-appear
-  :ensure t
-  :defer t
-  :hook (org-mode . org-appear-mode)
-  :config
-  (setq org-appear-autolinks t)
-  (setq org-appear-autosubmarkers t)
-  (setq org-appear-autoentities t)
-  (setq org-appear-autokeywords t)
-  (setq org-appear-inside-latex t)
-  )
+    :ensure t
+    :defer t
+    :hook (org-mode . org-appear-mode)
+    :config
+    (setq org-appear-autolinks t)
+    (setq org-appear-autosubmarkers t)
+    (setq org-appear-autoentities t)
+    (setq org-appear-autokeywords t)
+    (setq org-appear-inside-latex t)
+    )
 #+end_src
 **** org-contrib
 #+begin_src emacs-lisp
@@ -597,17 +633,17 @@ markdown
 **** org-download
 #+begin_src emacs-lisp
   ;; 粘贴图片到org mode
-(use-package org-download
-  :ensure t
-  :defer t ;; 延迟加载
-  :bind
-  (:map org-mode-map
-        ("C-M-y" . org-download-clipboard)) ;; 绑定从剪贴版粘贴截图的快捷键
-  :custom
-  (org-download-heading-lvl 1) ;; 用一级标题给截图文件命名
-  :config
-  (setq-default org-download-image-dir "./imgs")) ;; 用同级 ./img 目录放置截图文件
-(add-hook 'dired-mode-hook 'org-download-enable)
+  (use-package org-download
+    :ensure t
+    :defer t ;; 延迟加载
+    :bind
+    (:map org-mode-map
+          ("C-M-y" . org-download-clipboard)) ;; 绑定从剪贴版粘贴截图的快捷键
+    :custom
+    (org-download-heading-lvl 1) ;; 用一级标题给截图文件命名
+    :config
+    (setq-default org-download-image-dir "./imgs")) ;; 用同级 ./img 目录放置截图文件
+  (add-hook 'dired-mode-hook 'org-download-enable)
 
 #+end_src
 **** org-fragtog
@@ -623,9 +659,9 @@ markdown
 **** toc-org
 #+begin_src emacs-lisp
   (use-package toc-org
-  :ensure t
-  :defer t
-  )
+    :ensure t
+    :defer t
+    )
 
   (add-hook 'org-mode-hook 'toc-org-mode)
   (add-hook 'markdown-mode-hook 'toc-org-mode)
@@ -644,9 +680,9 @@ markdown
 导出markdown
 #+begin_src emacs-lisp
   (use-package ox-gfm
-  :ensure t
-  :defer t
-  :after ox)
+    :ensure t
+    :defer t
+    :after ox)
 #+end_src
 **** insert
 #+begin_src emacs-lisp
@@ -710,15 +746,15 @@ rust
     :defer t
     :config
     (setq truncate-lines nil) ;自动换行
-;    :init (global-flycheck-mode)
+  					;    :init (global-flycheck-mode)
     )
 #+end_src
 **** flycheck-rust
 #+begin_src emacs-lisp
   (use-package flycheck-rust
-  :ensure t
-  :defer t
-  )
+    :ensure t
+    :defer t
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -733,10 +769,10 @@ rust
 **** python-mode
 #+begin_src emacs-lisp
   (use-package python-mode
-  :defer t
-  :ensure t
-  :defer t
-  )
+    :defer t
+    :ensure t
+    :defer t
+    )
 #+end_src
 
 **** provide
@@ -923,7 +959,7 @@ GNUS配置
 dired模式配置
 **** dired
 #+begin_src emacs-lisp
-            
+
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -943,7 +979,7 @@ rime输入法 输入法在rime分支
     :custom
     (default-input-method "rime")
     (rime-show-candidate 'sidewindow)
-  )
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -958,11 +994,11 @@ rime输入法 输入法在rime分支
 **** ace-window主体
 #+begin_src emacs-lisp
   (use-package ace-window
-  :ensure t
-  :defer t
-  :bind
-  ("C-x o" . ace-window)
-  )
+    :ensure t
+    :defer t
+    :bind
+    ("C-x o" . ace-window)
+    )
 #+end_src
 
 **** provide
@@ -981,22 +1017,22 @@ rime输入法 输入法在rime分支
     :defer t
     :ensure t)
   (use-package treemacs
-  :ensure t
-  :defer t
-  :config
-  (treemacs-tag-follow-mode)
-  :bind
-  (:map global-map
-	("M-\-" . treemacs-select-window)
-	("C-x t 1" . treemacs-delete-other-windows)
-	("C-x t t" . treemacs)
-	("C-x t B" . treemacs-bookmark)
-	("C-x t M-t" . treemacs-find-tag)
-	)
-  (:map treemacs-mode-map
-	("/" . treemacs-advanced-helpful-hydra)
-	)
-  )
+    :ensure t
+    :defer t
+    :config
+    (treemacs-tag-follow-mode)
+    :bind
+    (:map global-map
+  	("M-\-" . treemacs-select-window)
+  	("C-x t 1" . treemacs-delete-other-windows)
+  	("C-x t t" . treemacs)
+  	("C-x t B" . treemacs-bookmark)
+  	("C-x t M-t" . treemacs-find-tag)
+  	)
+    (:map treemacs-mode-map
+  	("/" . treemacs-advanced-helpful-hydra)
+  	)
+    )
 #+end_src
 
 **** provide
@@ -1012,9 +1048,9 @@ rime输入法 输入法在rime分支
 **** battery
 #+begin_src emacs-lisp
   (use-package battery
-  :defer t
-  :hook (after-init . display-battery-mode)
-  )
+    :defer t
+    :hook (after-init . display-battery-mode)
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1043,15 +1079,15 @@ rime输入法 输入法在rime分支
 :END:
 **** windsize
 #+begin_src emacs-lisp
-        (use-package windsize
-          :ensure t
-          :defer t
-  	:bind
-  	("C-SPC p" . windsize-up)
-  	("C-SPC n" . windsize-down)
-  	("C-SPC f" . windsize-right)
-  	("C-SPC b" . windsize-left)
-  )
+  (use-package windsize
+    :ensure t
+    :defer t
+    :bind
+    ("C-SPC p" . windsize-up)
+    ("C-SPC n" . windsize-down)
+    ("C-SPC f" . windsize-right)
+    ("C-SPC b" . windsize-left)
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1082,7 +1118,7 @@ rime输入法 输入法在rime分支
     :init
 
     ;; Optionally replace the key help with a completing-read interface
-  ;;  (setq prefix-help-command #'embark-prefix-help-command)
+    ;;  (setq prefix-help-command #'embark-prefix-help-command)
 
     ;; Show the Embark target at point via Eldoc. You may adjust the
     ;; Eldoc strategy, if you want to see the documentation from
@@ -1097,9 +1133,9 @@ rime输入法 输入法在rime分支
 
     ;; Hide the mode line of the Embark live/completions buffers
     (add-to-list 'display-buffer-alist
-		 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-		   nil
-		   (window-parameters (mode-line-format . none)))))
+  	       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+  		 nil
+  		 (window-parameters (mode-line-format . none)))))
 
 
 #+end_src
@@ -1116,10 +1152,10 @@ rime输入法 输入法在rime分支
 显示快捷键
 #+begin_src emacs-lisp
   (use-package which-key
-  :ensure t
-  :defer t
-  :init (which-key-mode)
-  )
+    :ensure t
+    :defer t
+    :init (which-key-mode)
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1135,13 +1171,13 @@ undotree回溯
 **** undo-tree
 #+begin_src emacs-lisp
   (use-package undo-tree
-  :ensure t
-  :hook (after-init . global-undo-tree-mode)
-  :defer t
-  :config
-  ;; don't save undo history to local files
-  (setq undo-tree-auto-save-history nil)
-  )
+    :ensure t
+    :hook (after-init . global-undo-tree-mode)
+    :defer t
+    :config
+    ;; don't save undo history to local files
+    (setq undo-tree-auto-save-history nil)
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1159,10 +1195,10 @@ undotree回溯
     :ensure t
     :defer t
     :bind (("C-a" . crux-move-beginning-of-line)
-	   ("C-x 4 t" . crux-transpose-windows)
-	   ("C-x K" . crux-kill-other-buffers)
-	   ("C-k" . crux-smart-kill-line)
-	   ("C-x DEL" . crux-kill-line-backwards))
+  	 ("C-x 4 t" . crux-transpose-windows)
+  	 ("C-x K" . crux-kill-other-buffers)
+  	 ("C-k" . crux-smart-kill-line)
+  	 ("C-x DEL" . crux-kill-line-backwards))
     :config
     (crux-with-region-or-buffer indent-region)
     (crux-with-region-or-buffer untabify)
@@ -1202,9 +1238,9 @@ undotree回溯
 **** tramp
 #+begin_src emacs-lisp
   (use-package tramp
-  :ensure t
-  :defer t
-  )
+    :ensure t
+    :defer t
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1220,7 +1256,7 @@ aria2控制
   (use-package aria2
     :ensure t
     :defer t
-   )
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1287,7 +1323,7 @@ hydra快捷键管理
 #+end_src
 **** hydra_gdb
 #+begin_src emacs-lisp
-  
+
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1300,12 +1336,12 @@ hydra快捷键管理
 M-x的增強
 **** smex
 #+begin_src emacs-lisp
-    (use-package smex
-      :ensure t
-      :defer t
-  :bind
-  ("M-x" . smex)
-  )
+  (use-package smex
+    :ensure t
+    :defer t
+    :bind
+    ("M-x" . smex)
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1328,15 +1364,15 @@ gpg的集成
 快速打开shell
 **** shell-pop
 #+begin_src emacs-lisp
-    (use-package shell-pop
-      :ensure t
-      :defer t
-      :config
-      (setq shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
-      (setq shell-pop-term-shell "/bin/bash")
-      :bind
-      ("C-`" . shell-pop)
-  )
+  (use-package shell-pop
+    :ensure t
+    :defer t
+    :config
+    (setq shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))
+    (setq shell-pop-term-shell "/bin/bash")
+    :bind
+    ("C-`" . shell-pop)
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1349,36 +1385,36 @@ gpg的集成
 邮件客户端
 **** TODO wanderlust
 #+begin_src emacs-lisp
-    (use-package wl
-      :ensure wanderlust
-      :defer t
-  :init
-  (setq wl-folders-file (expand-file-name ".folder" user-emacs-directory)  ; 设置folder在.emacs.d/.folders
+  (use-package wl
+    :ensure wanderlust
+    :defer t
+    :init
+    (setq wl-folders-file (expand-file-name ".folder" user-emacs-directory)  ; 设置folder在.emacs.d/.folders
 
-        ; smtp
-        wl-smtp-posting-server "smtp.donplat.top" 
-        wl-smtp-posting-port 587 
-        wl-smtp-posting-user "donjuan@donplat.top" 
-        wl-smtp-authenticate-type "plain" 
-        wl-smtp-connection-type 'starttls 
-        wl-from "donjuan@donplat.top"
+  					; smtp
+  	wl-smtp-posting-server "smtp.donplat.top" 
+  	wl-smtp-posting-port 587 
+  	wl-smtp-posting-user "donjuan@donplat.top" 
+  	wl-smtp-authenticate-type "plain" 
+  	wl-smtp-connection-type 'starttls 
+  	wl-from "donjuan@donplat.top"
 
-        ; imap
-        elmo-imap4-default-user "donjuan@donplat.top" 
-        elmo-imap4-default-server "imap.donplat.top" 
-        elmo-imap4-default-port 993 
-        elmo-imap4-default-authenticate-type 'clear
-        elmo-imap4-default-stream-type 'ssl
-        elmo-passwd-storage-type 'auth-source
+  					; imap
+  	elmo-imap4-default-user "donjuan@donplat.top" 
+  	elmo-imap4-default-server "imap.donplat.top" 
+  	elmo-imap4-default-port 993 
+  	elmo-imap4-default-authenticate-type 'clear
+  	elmo-imap4-default-stream-type 'ssl
+  	elmo-passwd-storage-type 'auth-source
 
-         ;; 始终下载电子邮件而无需确认
-        wl-prefetch-threshold nil 
-        wl-message-buffer-prefetch-threshold nil 
-        elmo-message-fetch-threshold nil
+  	;; 始终下载电子邮件而无需确认
+  	wl-prefetch-threshold nil 
+  	wl-message-buffer-prefetch-threshold nil 
+  	elmo-message-fetch-threshold nil
 
-        
-        )
-  )
+  	
+  	)
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1410,18 +1446,18 @@ git状态显示
 git提交显示
 #+begin_src emacs-lisp
   (use-package blamer
-  :ensure t
-  :defer 20
-  :custom
-  (blamer-idle-time 2) ; 延迟时间
-  (blamer-min-offset 70)
-  :custom-face
-  (blamer-face ((t :foreground "#7a88cf"
-		    :background nil
-		    :height 100
-		    :italic t)))
-  :config
-  (global-blamer-mode 1))
+    :ensure t
+    :defer 20
+    :custom
+    (blamer-idle-time 2) ; 延迟时间
+    (blamer-min-offset 70)
+    :custom-face
+    (blamer-face ((t :foreground "#7a88cf"
+  		   :background nil
+  		   :height 100
+  		   :italic t)))
+    :config
+    (global-blamer-mode 1))
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1451,11 +1487,11 @@ git提交显示
 #+end_src
 **** modus
 #+begin_src emacs-lisp
-   (use-package modus-themes
-      :ensure t
-      :config
-      (load-theme 'modus-vivendi-tinted t)
-      )
+  (use-package modus-themes
+    :ensure t
+    :config
+    (load-theme 'modus-vivendi-tinted t)
+    )
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1472,8 +1508,8 @@ git提交显示
 **** rainbow
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
-  :ensure t
-  :hook (prog-mode . rainbow-delimiters-mode))
+    :ensure t
+    :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
 **** provide
@@ -1507,16 +1543,16 @@ git提交显示
 **** dashboard-items
 #+begin_src emacs-lisp
   (setq dashboard-items '(
-			  (recents . 5)
-			  (projects . 5)
-			  ))
+  			(recents . 5)
+  			(projects . 5)
+  			))
 #+end_src
 
 **** dashboard-item-shortcuts
 #+begin_src emacs-lisp
   (setq dashboard-item-shortcuts '((recents . "r")
-				   (projects . "p")
-				   ))
+  				 (projects . "p")
+  				 ))
 #+end_src
 **** provide
 #+begin_src emacs-lisp
@@ -1830,948 +1866,948 @@ git提交显示
 .markdown-body [type=number]::-webkit-inner-spin-button,
 .markdown-body [type=number]::-webkit-outer-spin-button {
   height: auto;
-}
-
-.markdown-body [type=search]::-webkit-search-cancel-button,
-.markdown-body [type=search]::-webkit-search-decoration {
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.markdown-body ::-webkit-input-placeholder {
-  color: inherit;
-  opacity: .54;
-}
-
-.markdown-body ::-webkit-file-upload-button {
-  -webkit-appearance: button;
-  appearance: button;
-  font: inherit;
-}
-
-.markdown-body a:hover {
-  text-decoration: underline;
-}
-
-.markdown-body ::placeholder {
-  color: var(--fgColor-muted);
-  opacity: 1;
-}
-
-.markdown-body hr::before {
-  display: table;
-  content: "";
-}
-
-.markdown-body hr::after {
-  display: table;
-  clear: both;
-  content: "";
-}
-
-.markdown-body table {
-  border-spacing: 0;
-  border-collapse: collapse;
-  display: block;
-  width: max-content;
-  max-width: 100%;
-  overflow: auto;
-}
-
-.markdown-body td,
-.markdown-body th {
-  padding: 0;
-}
-
-.markdown-body details summary {
-  cursor: pointer;
-}
-
-.markdown-body details:not([open])>*:not(summary) {
-  display: none;
-}
-
-.markdown-body a:focus,
-.markdown-body [role=button]:focus,
-.markdown-body input[type=radio]:focus,
-.markdown-body input[type=checkbox]:focus {
-  outline: 2px solid var(--focus-outlineColor);
-  outline-offset: -2px;
-  box-shadow: none;
-}
-
-.markdown-body a:focus:not(:focus-visible),
-.markdown-body [role=button]:focus:not(:focus-visible),
-.markdown-body input[type=radio]:focus:not(:focus-visible),
-.markdown-body input[type=checkbox]:focus:not(:focus-visible) {
-  outline: solid 1px transparent;
-}
-
-.markdown-body a:focus-visible,
-.markdown-body [role=button]:focus-visible,
-.markdown-body input[type=radio]:focus-visible,
-.markdown-body input[type=checkbox]:focus-visible {
-  outline: 2px solid var(--focus-outlineColor);
-  outline-offset: -2px;
-  box-shadow: none;
-}
-
-.markdown-body a:not([class]):focus,
-.markdown-body a:not([class]):focus-visible,
-.markdown-body input[type=radio]:focus,
-.markdown-body input[type=radio]:focus-visible,
-.markdown-body input[type=checkbox]:focus,
-.markdown-body input[type=checkbox]:focus-visible {
-  outline-offset: 0;
-}
-
-.markdown-body kbd {
-  display: inline-block;
-  padding: 3px 5px;
-  font: 11px var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace);
-  line-height: 10px;
-  color: var(--fgColor-default);
-  vertical-align: middle;
-  background-color: var(--bgColor-muted);
-  border: solid 1px var(--borderColor-neutral-muted);
-  border-bottom-color: var(--borderColor-neutral-muted);
-  border-radius: 6px;
-  box-shadow: inset 0 -1px 0 var(--borderColor-neutral-muted);
-}
-
-.markdown-body h1,
-.markdown-body h2,
-.markdown-body h3,
-.markdown-body h4,
-.markdown-body h5,
-.markdown-body h6 {
-  margin-top: 24px;
-  margin-bottom: 16px;
-  font-weight: var(--base-text-weight-semibold, 600);
-  line-height: 1.25;
-}
-
-.markdown-body h2 {
-  font-weight: var(--base-text-weight-semibold, 600);
-  padding-bottom: .3em;
-  font-size: 1.5em;
-  border-bottom: 1px solid var(--borderColor-muted);
-}
-
-.markdown-body h3 {
-  font-weight: var(--base-text-weight-semibold, 600);
-  font-size: 1.25em;
-}
-
-.markdown-body h4 {
-  font-weight: var(--base-text-weight-semibold, 600);
-  font-size: 1em;
-}
-
-.markdown-body h5 {
-  font-weight: var(--base-text-weight-semibold, 600);
-  font-size: .875em;
-}
-
-.markdown-body h6 {
-  font-weight: var(--base-text-weight-semibold, 600);
-  font-size: .85em;
-  color: var(--fgColor-muted);
-}
-
-.markdown-body p {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-
-.markdown-body blockquote {
-  margin: 0;
-  padding: 0 1em;
-  color: var(--fgColor-muted);
-  border-left: .25em solid var(--borderColor-default);
-}
-
-.markdown-body ul,
-.markdown-body ol {
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-left: 2em;
-}
-
-.markdown-body ol ol,
-.markdown-body ul ol {
-  list-style-type: lower-roman;
-}
-
-.markdown-body ul ul ol,
-.markdown-body ul ol ol,
-.markdown-body ol ul ol,
-.markdown-body ol ol ol {
-  list-style-type: lower-alpha;
-}
-
-.markdown-body dd {
-  margin-left: 0;
-}
-
-.markdown-body tt,
-.markdown-body code,
-.markdown-body samp {
-  font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace);
-  font-size: 12px;
-}
-
-.markdown-body pre {
-  margin-top: 0;
-  margin-bottom: 0;
-  font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace);
-  font-size: 12px;
-  word-wrap: normal;
-}
-
-.markdown-body .octicon {
-  display: inline-block;
-  overflow: visible !important;
-  vertical-align: text-bottom;
-  fill: currentColor;
-}
-
-.markdown-body input::-webkit-outer-spin-button,
-.markdown-body input::-webkit-inner-spin-button {
-  margin: 0;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.markdown-body .mr-2 {
-  margin-right: var(--base-size-8, 8px) !important;
-}
-
-.markdown-body::before {
-  display: table;
-  content: "";
-}
-
-.markdown-body::after {
-  display: table;
-  clear: both;
-  content: "";
-}
-
-.markdown-body>*:first-child {
-  margin-top: 0 !important;
-}
-
-.markdown-body>*:last-child {
-  margin-bottom: 0 !important;
-}
-
-.markdown-body a:not([href]) {
-  color: inherit;
-  text-decoration: none;
-}
-
-.markdown-body .absent {
-  color: var(--fgColor-danger);
-}
-
-.markdown-body .anchor {
-  float: left;
-  padding-right: 4px;
-  margin-left: -20px;
-  line-height: 1;
-}
-
-.markdown-body .anchor:focus {
-  outline: none;
-}
-
-.markdown-body p,
-.markdown-body blockquote,
-.markdown-body ul,
-.markdown-body ol,
-.markdown-body dl,
-.markdown-body table,
-.markdown-body pre,
-.markdown-body details {
-  margin-top: 0;
-  margin-bottom: 16px;
-}
-
-.markdown-body blockquote>:first-child {
-  margin-top: 0;
-}
-
-.markdown-body blockquote>:last-child {
-  margin-bottom: 0;
-}
-
-.markdown-body h1 .octicon-link,
-.markdown-body h2 .octicon-link,
-.markdown-body h3 .octicon-link,
-.markdown-body h4 .octicon-link,
-.markdown-body h5 .octicon-link,
-.markdown-body h6 .octicon-link {
-  color: var(--fgColor-default);
-  vertical-align: middle;
-  visibility: hidden;
-}
-
-.markdown-body h1:hover .anchor,
-.markdown-body h2:hover .anchor,
-.markdown-body h3:hover .anchor,
-.markdown-body h4:hover .anchor,
-.markdown-body h5:hover .anchor,
-.markdown-body h6:hover .anchor {
-  text-decoration: none;
-}
-
-.markdown-body h1:hover .anchor .octicon-link,
-.markdown-body h2:hover .anchor .octicon-link,
-.markdown-body h3:hover .anchor .octicon-link,
-.markdown-body h4:hover .anchor .octicon-link,
-.markdown-body h5:hover .anchor .octicon-link,
-.markdown-body h6:hover .anchor .octicon-link {
-  visibility: visible;
-}
-
-.markdown-body h1 tt,
-.markdown-body h1 code,
-.markdown-body h2 tt,
-.markdown-body h2 code,
-.markdown-body h3 tt,
-.markdown-body h3 code,
-.markdown-body h4 tt,
-.markdown-body h4 code,
-.markdown-body h5 tt,
-.markdown-body h5 code,
-.markdown-body h6 tt,
-.markdown-body h6 code {
-  padding: 0 .2em;
-  font-size: inherit;
-}
-
-.markdown-body summary h1,
-.markdown-body summary h2,
-.markdown-body summary h3,
-.markdown-body summary h4,
-.markdown-body summary h5,
-.markdown-body summary h6 {
-  display: inline-block;
-}
-
-.markdown-body summary h1 .anchor,
-.markdown-body summary h2 .anchor,
-.markdown-body summary h3 .anchor,
-.markdown-body summary h4 .anchor,
-.markdown-body summary h5 .anchor,
-.markdown-body summary h6 .anchor {
-  margin-left: -40px;
-}
-
-.markdown-body summary h1,
-.markdown-body summary h2 {
-  padding-bottom: 0;
-  border-bottom: 0;
-}
-
-.markdown-body ul.no-list,
-.markdown-body ol.no-list {
-  padding: 0;
-  list-style-type: none;
-}
-
-.markdown-body ol[type="a s"] {
-  list-style-type: lower-alpha;
-}
-
-.markdown-body ol[type="A s"] {
-  list-style-type: upper-alpha;
-}
-
-.markdown-body ol[type="i s"] {
-  list-style-type: lower-roman;
-}
-
-.markdown-body ol[type="I s"] {
-  list-style-type: upper-roman;
-}
-
-.markdown-body ol[type="1"] {
-  list-style-type: decimal;
-}
-
-.markdown-body div>ol:not([type]) {
-  list-style-type: decimal;
-}
-
-.markdown-body ul ul,
-.markdown-body ul ol,
-.markdown-body ol ol,
-.markdown-body ol ul {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.markdown-body li>p {
-  margin-top: 16px;
-}
-
-.markdown-body li+li {
-  margin-top: .25em;
-}
-
-.markdown-body dl {
-  padding: 0;
-}
-
-.markdown-body dl dt {
-  padding: 0;
-  margin-top: 16px;
-  font-size: 1em;
-  font-style: italic;
-  font-weight: var(--base-text-weight-semibold, 600);
-}
-
-.markdown-body dl dd {
-  padding: 0 16px;
-  margin-bottom: 16px;
-}
-
-.markdown-body table th {
-  font-weight: var(--base-text-weight-semibold, 600);
-}
-
-.markdown-body table th,
-.markdown-body table td {
-  padding: 6px 13px;
-  border: 1px solid var(--borderColor-default);
-}
-
-.markdown-body table td>:last-child {
-  margin-bottom: 0;
-}
-
-.markdown-body table tr {
-  background-color: var(--bgColor-default);
-  border-top: 1px solid var(--borderColor-muted);
-}
-
-.markdown-body table tr:nth-child(2n) {
-  background-color: var(--bgColor-muted);
-}
-
-.markdown-body table img {
-  background-color: transparent;
-}
-
-.markdown-body img[align=right] {
-  padding-left: 20px;
-}
-
-.markdown-body img[align=left] {
-  padding-right: 20px;
-}
-
-.markdown-body .emoji {
-  max-width: none;
-  vertical-align: text-top;
-  background-color: transparent;
-}
-
-.markdown-body span.frame {
-  display: block;
-  overflow: hidden;
-}
-
-.markdown-body span.frame>span {
-  display: block;
-  float: left;
-  width: auto;
-  padding: 7px;
-  margin: 13px 0 0;
-  overflow: hidden;
-  border: 1px solid var(--borderColor-default);
-}
-
-.markdown-body span.frame span img {
-  display: block;
-  float: left;
-}
-
-.markdown-body span.frame span span {
-  display: block;
-  padding: 5px 0 0;
-  clear: both;
-  color: var(--fgColor-default);
-}
-
-.markdown-body span.align-center {
-  display: block;
-  overflow: hidden;
-  clear: both;
-}
-
-.markdown-body span.align-center>span {
-  display: block;
-  margin: 13px auto 0;
-  overflow: hidden;
-  text-align: center;
-}
-
-.markdown-body span.align-center span img {
-  margin: 0 auto;
-  text-align: center;
-}
-
-.markdown-body span.align-right {
-  display: block;
-  overflow: hidden;
-  clear: both;
-}
-
-.markdown-body span.align-right>span {
-  display: block;
-  margin: 13px 0 0;
-  overflow: hidden;
-  text-align: right;
-}
-
-.markdown-body span.align-right span img {
-  margin: 0;
-  text-align: right;
-}
-
-.markdown-body span.float-left {
-  display: block;
-  float: left;
-  margin-right: 13px;
-  overflow: hidden;
-}
-
-.markdown-body span.float-left span {
-  margin: 13px 0 0;
-}
-
-.markdown-body span.float-right {
-  display: block;
-  float: right;
-  margin-left: 13px;
-  overflow: hidden;
-}
-
-.markdown-body span.float-right>span {
-  display: block;
-  margin: 13px auto 0;
-  overflow: hidden;
-  text-align: right;
-}
-
-.markdown-body code,
-.markdown-body tt {
-  padding: .2em .4em;
-  margin: 0;
-  font-size: 85%;
-  white-space: break-spaces;
-  background-color: var(--bgColor-neutral-muted);
-  border-radius: 6px;
-}
-
-.markdown-body code br,
-.markdown-body tt br {
-  display: none;
-}
-
-.markdown-body del code {
-  text-decoration: inherit;
-}
-
-.markdown-body samp {
-  font-size: 85%;
-}
-
-.markdown-body pre code {
-  font-size: 100%;
-}
-
-.markdown-body pre>code {
-  padding: 0;
-  margin: 0;
-  word-break: normal;
-  white-space: pre;
-  background: transparent;
-  border: 0;
-}
-
-.markdown-body .highlight {
-  margin-bottom: 16px;
-}
-
-.markdown-body .highlight pre {
-  margin-bottom: 0;
-  word-break: normal;
-}
-
-.markdown-body .highlight pre,
-.markdown-body pre {
-  padding: 16px;
-  overflow: auto;
-  font-size: 85%;
-  line-height: 1.45;
-  color: var(--fgColor-default);
-  background-color: var(--bgColor-muted);
-  border-radius: 6px;
-}
-
-.markdown-body pre code,
-.markdown-body pre tt {
-  display: inline;
-  max-width: auto;
-  padding: 0;
-  margin: 0;
-  overflow: visible;
-  line-height: inherit;
-  word-wrap: normal;
-  background-color: transparent;
-  border: 0;
-}
-
-.markdown-body .csv-data td,
-.markdown-body .csv-data th {
-  padding: 5px;
-  overflow: hidden;
-  font-size: 12px;
-  line-height: 1;
-  text-align: left;
-  white-space: nowrap;
-}
-
-.markdown-body .csv-data .blob-num {
-  padding: 10px 8px 9px;
-  text-align: right;
-  background: var(--bgColor-default);
-  border: 0;
-}
-
-.markdown-body .csv-data tr {
-  border-top: 0;
-}
-
-.markdown-body .csv-data th {
-  font-weight: var(--base-text-weight-semibold, 600);
-  background: var(--bgColor-muted);
-  border-top: 0;
-}
-
-.markdown-body [data-footnote-ref]::before {
-  content: "[";
-}
-
-.markdown-body [data-footnote-ref]::after {
-  content: "]";
-}
-
-.markdown-body .footnotes {
-  font-size: 12px;
-  color: var(--fgColor-muted);
-  border-top: 1px solid var(--borderColor-default);
-}
-
-.markdown-body .footnotes ol {
-  padding-left: 16px;
-}
-
-.markdown-body .footnotes ol ul {
-  display: inline-block;
-  padding-left: 16px;
-  margin-top: 16px;
-}
-
-.markdown-body .footnotes li {
-  position: relative;
-}
-
-.markdown-body .footnotes li:target::before {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  bottom: -8px;
-  left: -24px;
-  pointer-events: none;
-  content: "";
-  border: 2px solid var(--borderColor-accent-emphasis);
-  border-radius: 6px;
-}
-
-.markdown-body .footnotes li:target {
-  color: var(--fgColor-default);
-}
-
-.markdown-body .footnotes .data-footnote-backref g-emoji {
-  font-family: monospace;
-}
-
-.markdown-body .pl-c {
-  color: var(--color-prettylights-syntax-comment);
-}
-
-.markdown-body .pl-c1,
-.markdown-body .pl-s .pl-v {
-  color: var(--color-prettylights-syntax-constant);
-}
-
-.markdown-body .pl-e,
-.markdown-body .pl-en {
-  color: var(--color-prettylights-syntax-entity);
-}
-
-.markdown-body .pl-smi,
-.markdown-body .pl-s .pl-s1 {
-  color: var(--color-prettylights-syntax-storage-modifier-import);
-}
-
-.markdown-body .pl-ent {
-  color: var(--color-prettylights-syntax-entity-tag);
-}
-
-.markdown-body .pl-k {
-  color: var(--color-prettylights-syntax-keyword);
-}
-
-.markdown-body .pl-s,
-.markdown-body .pl-pds,
-.markdown-body .pl-s .pl-pse .pl-s1,
-.markdown-body .pl-sr,
-.markdown-body .pl-sr .pl-cce,
-.markdown-body .pl-sr .pl-sre,
-.markdown-body .pl-sr .pl-sra {
-  color: var(--color-prettylights-syntax-string);
-}
-
-.markdown-body .pl-v,
-.markdown-body .pl-smw {
-  color: var(--color-prettylights-syntax-variable);
-}
-
-.markdown-body .pl-bu {
-  color: var(--color-prettylights-syntax-brackethighlighter-unmatched);
-}
-
-.markdown-body .pl-ii {
-  color: var(--color-prettylights-syntax-invalid-illegal-text);
-  background-color: var(--color-prettylights-syntax-invalid-illegal-bg);
-}
-
-.markdown-body .pl-c2 {
-  color: var(--color-prettylights-syntax-carriage-return-text);
-  background-color: var(--color-prettylights-syntax-carriage-return-bg);
-}
-
-.markdown-body .pl-sr .pl-cce {
-  font-weight: bold;
-  color: var(--color-prettylights-syntax-string-regexp);
-}
-
-.markdown-body .pl-ml {
-  color: var(--color-prettylights-syntax-markup-list);
-}
-
-.markdown-body .pl-mh,
-.markdown-body .pl-mh .pl-en,
-.markdown-body .pl-ms {
-  font-weight: bold;
-  color: var(--color-prettylights-syntax-markup-heading);
-}
-
-.markdown-body .pl-mi {
-  font-style: italic;
-  color: var(--color-prettylights-syntax-markup-italic);
-}
-
-.markdown-body .pl-mb {
-  font-weight: bold;
-  color: var(--color-prettylights-syntax-markup-bold);
-}
-
-.markdown-body .pl-md {
-  color: var(--color-prettylights-syntax-markup-deleted-text);
-  background-color: var(--color-prettylights-syntax-markup-deleted-bg);
-}
-
-.markdown-body .pl-mi1 {
-  color: var(--color-prettylights-syntax-markup-inserted-text);
-  background-color: var(--color-prettylights-syntax-markup-inserted-bg);
-}
-
-.markdown-body .pl-mc {
-  color: var(--color-prettylights-syntax-markup-changed-text);
-  background-color: var(--color-prettylights-syntax-markup-changed-bg);
-}
-
-.markdown-body .pl-mi2 {
-  color: var(--color-prettylights-syntax-markup-ignored-text);
-  background-color: var(--color-prettylights-syntax-markup-ignored-bg);
-}
-
-.markdown-body .pl-mdr {
-  font-weight: bold;
-  color: var(--color-prettylights-syntax-meta-diff-range);
-}
-
-.markdown-body .pl-ba {
-  color: var(--color-prettylights-syntax-brackethighlighter-angle);
-}
-
-.markdown-body .pl-sg {
-  color: var(--color-prettylights-syntax-sublimelinter-gutter-mark);
-}
-
-.markdown-body .pl-corl {
-  text-decoration: underline;
-  color: var(--color-prettylights-syntax-constant-other-reference-link);
-}
-
-.markdown-body [role=button]:focus:not(:focus-visible),
-.markdown-body [role=tabpanel][tabindex="0"]:focus:not(:focus-visible),
-.markdown-body button:focus:not(:focus-visible),
-.markdown-body summary:focus:not(:focus-visible),
-.markdown-body a:focus:not(:focus-visible) {
-  outline: none;
-  box-shadow: none;
-}
-
-.markdown-body [tabindex="0"]:focus:not(:focus-visible),
-.markdown-body details-dialog:focus:not(:focus-visible) {
-  outline: none;
-}
-
-.markdown-body g-emoji {
-  display: inline-block;
-  min-width: 1ch;
-  font-family: "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-  font-size: 1em;
-  font-style: normal !important;
-  font-weight: var(--base-text-weight-normal, 400);
-  line-height: 1;
-  vertical-align: -0.075em;
-}
-
-.markdown-body g-emoji img {
-  width: 1em;
-  height: 1em;
-}
-
-.markdown-body .task-list-item {
-  list-style-type: none;
-}
-
-.markdown-body .task-list-item label {
-  font-weight: var(--base-text-weight-normal, 400);
-}
-
-.markdown-body .task-list-item.enabled label {
-  cursor: pointer;
-}
-
-.markdown-body .task-list-item+.task-list-item {
-  margin-top: var(--base-size-4);
-}
-
-.markdown-body .task-list-item .handle {
-  display: none;
-}
-
-.markdown-body .task-list-item-checkbox {
-  margin: 0 .2em .25em -1.4em;
-  vertical-align: middle;
-}
-
-.markdown-body .contains-task-list:dir(rtl) .task-list-item-checkbox {
-  margin: 0 -1.6em .25em .2em;
-}
-
-.markdown-body .contains-task-list {
-  position: relative;
-}
-
-.markdown-body .contains-task-list:hover .task-list-item-convert-container,
-.markdown-body .contains-task-list:focus-within .task-list-item-convert-container {
-  display: block;
-  width: auto;
-  height: 24px;
-  overflow: visible;
-  clip: auto;
-}
-
-.markdown-body ::-webkit-calendar-picker-indicator {
-  filter: invert(50%);
-}
-
-.markdown-body .markdown-alert {
-  padding: var(--base-size-8) var(--base-size-16);
-  margin-bottom: var(--base-size-16);
-  color: inherit;
-  border-left: .25em solid var(--borderColor-default);
-}
-
-.markdown-body .markdown-alert>:first-child {
-  margin-top: 0;
-}
-
-.markdown-body .markdown-alert>:last-child {
-  margin-bottom: 0;
-}
-
-.markdown-body .markdown-alert .markdown-alert-title {
-  display: flex;
-  font-weight: var(--base-text-weight-medium, 500);
-  align-items: center;
-  line-height: 1;
-}
-
-.markdown-body .markdown-alert.markdown-alert-note {
-  border-left-color: var(--borderColor-accent-emphasis);
-}
-
-.markdown-body .markdown-alert.markdown-alert-note .markdown-alert-title {
-  color: var(--fgColor-accent);
-}
-
-.markdown-body .markdown-alert.markdown-alert-important {
-  border-left-color: var(--borderColor-done-emphasis);
-}
-
-.markdown-body .markdown-alert.markdown-alert-important .markdown-alert-title {
-  color: var(--fgColor-done);
-}
-
-.markdown-body .markdown-alert.markdown-alert-warning {
-  border-left-color: var(--borderColor-attention-emphasis);
-}
-
-.markdown-body .markdown-alert.markdown-alert-warning .markdown-alert-title {
-  color: var(--fgColor-attention);
-}
-
-.markdown-body .markdown-alert.markdown-alert-tip {
-  border-left-color: var(--borderColor-success-emphasis);
-}
-
-.markdown-body .markdown-alert.markdown-alert-tip .markdown-alert-title {
-  color: var(--fgColor-success);
-}
-
-.markdown-body .markdown-alert.markdown-alert-caution {
-  border-left-color: var(--borderColor-danger-emphasis);
-}
-
-.markdown-body .markdown-alert.markdown-alert-caution .markdown-alert-title {
-  color: var(--fgColor-danger);
-}
-
-.markdown-body>*:first-child>.heading-element:first-child {
-  margin-top: 0 !important;
-}
+  }
+
+  .markdown-body [type=search]::-webkit-search-cancel-button,
+  .markdown-body [type=search]::-webkit-search-decoration {
+      -webkit-appearance: none;
+      appearance: none;
+  }
+
+  .markdown-body ::-webkit-input-placeholder {
+      color: inherit;
+      opacity: .54;
+  }
+
+  .markdown-body ::-webkit-file-upload-button {
+      -webkit-appearance: button;
+      appearance: button;
+      font: inherit;
+  }
+
+  .markdown-body a:hover {
+      text-decoration: underline;
+  }
+
+  .markdown-body ::placeholder {
+      color: var(--fgColor-muted);
+      opacity: 1;
+  }
+
+  .markdown-body hr::before {
+      display: table;
+      content: "";
+  }
+
+  .markdown-body hr::after {
+      display: table;
+      clear: both;
+      content: "";
+  }
+
+  .markdown-body table {
+      border-spacing: 0;
+      border-collapse: collapse;
+      display: block;
+      width: max-content;
+      max-width: 100%;
+      overflow: auto;
+  }
+
+  .markdown-body td,
+  .markdown-body th {
+      padding: 0;
+  }
+
+  .markdown-body details summary {
+      cursor: pointer;
+  }
+
+  .markdown-body details:not([open])>*:not(summary) {
+      display: none;
+  }
+
+  .markdown-body a:focus,
+  .markdown-body [role=button]:focus,
+  .markdown-body input[type=radio]:focus,
+  .markdown-body input[type=checkbox]:focus {
+      outline: 2px solid var(--focus-outlineColor);
+      outline-offset: -2px;
+      box-shadow: none;
+  }
+
+  .markdown-body a:focus:not(:focus-visible),
+  .markdown-body [role=button]:focus:not(:focus-visible),
+  .markdown-body input[type=radio]:focus:not(:focus-visible),
+  .markdown-body input[type=checkbox]:focus:not(:focus-visible) {
+      outline: solid 1px transparent;
+  }
+
+  .markdown-body a:focus-visible,
+  .markdown-body [role=button]:focus-visible,
+  .markdown-body input[type=radio]:focus-visible,
+  .markdown-body input[type=checkbox]:focus-visible {
+      outline: 2px solid var(--focus-outlineColor);
+      outline-offset: -2px;
+      box-shadow: none;
+  }
+
+  .markdown-body a:not([class]):focus,
+  .markdown-body a:not([class]):focus-visible,
+  .markdown-body input[type=radio]:focus,
+  .markdown-body input[type=radio]:focus-visible,
+  .markdown-body input[type=checkbox]:focus,
+  .markdown-body input[type=checkbox]:focus-visible {
+      outline-offset: 0;
+  }
+
+  .markdown-body kbd {
+      display: inline-block;
+      padding: 3px 5px;
+      font: 11px var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace);
+      line-height: 10px;
+      color: var(--fgColor-default);
+      vertical-align: middle;
+      background-color: var(--bgColor-muted);
+      border: solid 1px var(--borderColor-neutral-muted);
+      border-bottom-color: var(--borderColor-neutral-muted);
+      border-radius: 6px;
+      box-shadow: inset 0 -1px 0 var(--borderColor-neutral-muted);
+  }
+
+  .markdown-body h1,
+  .markdown-body h2,
+  .markdown-body h3,
+  .markdown-body h4,
+  .markdown-body h5,
+  .markdown-body h6 {
+      margin-top: 24px;
+      margin-bottom: 16px;
+      font-weight: var(--base-text-weight-semibold, 600);
+      line-height: 1.25;
+  }
+
+  .markdown-body h2 {
+      font-weight: var(--base-text-weight-semibold, 600);
+      padding-bottom: .3em;
+      font-size: 1.5em;
+      border-bottom: 1px solid var(--borderColor-muted);
+  }
+
+  .markdown-body h3 {
+      font-weight: var(--base-text-weight-semibold, 600);
+      font-size: 1.25em;
+  }
+
+  .markdown-body h4 {
+      font-weight: var(--base-text-weight-semibold, 600);
+      font-size: 1em;
+  }
+
+  .markdown-body h5 {
+      font-weight: var(--base-text-weight-semibold, 600);
+      font-size: .875em;
+  }
+
+  .markdown-body h6 {
+      font-weight: var(--base-text-weight-semibold, 600);
+      font-size: .85em;
+      color: var(--fgColor-muted);
+  }
+
+  .markdown-body p {
+      margin-top: 0;
+      margin-bottom: 10px;
+  }
+
+  .markdown-body blockquote {
+      margin: 0;
+      padding: 0 1em;
+      color: var(--fgColor-muted);
+      border-left: .25em solid var(--borderColor-default);
+  }
+
+  .markdown-body ul,
+  .markdown-body ol {
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-left: 2em;
+  }
+
+  .markdown-body ol ol,
+  .markdown-body ul ol {
+      list-style-type: lower-roman;
+  }
+
+  .markdown-body ul ul ol,
+  .markdown-body ul ol ol,
+  .markdown-body ol ul ol,
+  .markdown-body ol ol ol {
+      list-style-type: lower-alpha;
+  }
+
+  .markdown-body dd {
+      margin-left: 0;
+  }
+
+  .markdown-body tt,
+  .markdown-body code,
+  .markdown-body samp {
+      font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace);
+      font-size: 12px;
+  }
+
+  .markdown-body pre {
+      margin-top: 0;
+      margin-bottom: 0;
+      font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace);
+      font-size: 12px;
+      word-wrap: normal;
+  }
+
+  .markdown-body .octicon {
+      display: inline-block;
+      overflow: visible !important;
+      vertical-align: text-bottom;
+      fill: currentColor;
+  }
+
+  .markdown-body input::-webkit-outer-spin-button,
+  .markdown-body input::-webkit-inner-spin-button {
+      margin: 0;
+      -webkit-appearance: none;
+      appearance: none;
+  }
+
+  .markdown-body .mr-2 {
+      margin-right: var(--base-size-8, 8px) !important;
+  }
+
+  .markdown-body::before {
+      display: table;
+      content: "";
+  }
+
+  .markdown-body::after {
+      display: table;
+      clear: both;
+      content: "";
+  }
+
+  .markdown-body>*:first-child {
+      margin-top: 0 !important;
+  }
+
+  .markdown-body>*:last-child {
+      margin-bottom: 0 !important;
+  }
+
+  .markdown-body a:not([href]) {
+      color: inherit;
+      text-decoration: none;
+  }
+
+  .markdown-body .absent {
+      color: var(--fgColor-danger);
+  }
+
+  .markdown-body .anchor {
+      float: left;
+      padding-right: 4px;
+      margin-left: -20px;
+      line-height: 1;
+  }
+
+  .markdown-body .anchor:focus {
+      outline: none;
+  }
+
+  .markdown-body p,
+  .markdown-body blockquote,
+  .markdown-body ul,
+  .markdown-body ol,
+  .markdown-body dl,
+  .markdown-body table,
+  .markdown-body pre,
+  .markdown-body details {
+      margin-top: 0;
+      margin-bottom: 16px;
+  }
+
+  .markdown-body blockquote>:first-child {
+      margin-top: 0;
+  }
+
+  .markdown-body blockquote>:last-child {
+      margin-bottom: 0;
+  }
+
+  .markdown-body h1 .octicon-link,
+  .markdown-body h2 .octicon-link,
+  .markdown-body h3 .octicon-link,
+  .markdown-body h4 .octicon-link,
+  .markdown-body h5 .octicon-link,
+  .markdown-body h6 .octicon-link {
+      color: var(--fgColor-default);
+      vertical-align: middle;
+      visibility: hidden;
+  }
+
+  .markdown-body h1:hover .anchor,
+  .markdown-body h2:hover .anchor,
+  .markdown-body h3:hover .anchor,
+  .markdown-body h4:hover .anchor,
+  .markdown-body h5:hover .anchor,
+  .markdown-body h6:hover .anchor {
+      text-decoration: none;
+  }
+
+  .markdown-body h1:hover .anchor .octicon-link,
+  .markdown-body h2:hover .anchor .octicon-link,
+  .markdown-body h3:hover .anchor .octicon-link,
+  .markdown-body h4:hover .anchor .octicon-link,
+  .markdown-body h5:hover .anchor .octicon-link,
+  .markdown-body h6:hover .anchor .octicon-link {
+      visibility: visible;
+  }
+
+  .markdown-body h1 tt,
+  .markdown-body h1 code,
+  .markdown-body h2 tt,
+  .markdown-body h2 code,
+  .markdown-body h3 tt,
+  .markdown-body h3 code,
+  .markdown-body h4 tt,
+  .markdown-body h4 code,
+  .markdown-body h5 tt,
+  .markdown-body h5 code,
+  .markdown-body h6 tt,
+  .markdown-body h6 code {
+      padding: 0 .2em;
+      font-size: inherit;
+  }
+
+  .markdown-body summary h1,
+  .markdown-body summary h2,
+  .markdown-body summary h3,
+  .markdown-body summary h4,
+  .markdown-body summary h5,
+  .markdown-body summary h6 {
+      display: inline-block;
+  }
+
+  .markdown-body summary h1 .anchor,
+  .markdown-body summary h2 .anchor,
+  .markdown-body summary h3 .anchor,
+  .markdown-body summary h4 .anchor,
+  .markdown-body summary h5 .anchor,
+  .markdown-body summary h6 .anchor {
+      margin-left: -40px;
+  }
+
+  .markdown-body summary h1,
+  .markdown-body summary h2 {
+      padding-bottom: 0;
+      border-bottom: 0;
+  }
+
+  .markdown-body ul.no-list,
+  .markdown-body ol.no-list {
+      padding: 0;
+      list-style-type: none;
+  }
+
+  .markdown-body ol[type="a s"] {
+      list-style-type: lower-alpha;
+  }
+
+  .markdown-body ol[type="A s"] {
+      list-style-type: upper-alpha;
+  }
+
+  .markdown-body ol[type="i s"] {
+      list-style-type: lower-roman;
+  }
+
+  .markdown-body ol[type="I s"] {
+      list-style-type: upper-roman;
+  }
+
+  .markdown-body ol[type="1"] {
+      list-style-type: decimal;
+  }
+
+  .markdown-body div>ol:not([type]) {
+      list-style-type: decimal;
+  }
+
+  .markdown-body ul ul,
+  .markdown-body ul ol,
+  .markdown-body ol ol,
+  .markdown-body ol ul {
+      margin-top: 0;
+      margin-bottom: 0;
+  }
+
+  .markdown-body li>p {
+      margin-top: 16px;
+  }
+
+  .markdown-body li+li {
+      margin-top: .25em;
+  }
+
+  .markdown-body dl {
+      padding: 0;
+  }
+
+  .markdown-body dl dt {
+      padding: 0;
+      margin-top: 16px;
+      font-size: 1em;
+      font-style: italic;
+      font-weight: var(--base-text-weight-semibold, 600);
+  }
+
+  .markdown-body dl dd {
+      padding: 0 16px;
+      margin-bottom: 16px;
+  }
+
+  .markdown-body table th {
+      font-weight: var(--base-text-weight-semibold, 600);
+  }
+
+  .markdown-body table th,
+  .markdown-body table td {
+      padding: 6px 13px;
+      border: 1px solid var(--borderColor-default);
+  }
+
+  .markdown-body table td>:last-child {
+      margin-bottom: 0;
+  }
+
+  .markdown-body table tr {
+      background-color: var(--bgColor-default);
+      border-top: 1px solid var(--borderColor-muted);
+  }
+
+  .markdown-body table tr:nth-child(2n) {
+      background-color: var(--bgColor-muted);
+  }
+
+  .markdown-body table img {
+      background-color: transparent;
+  }
+
+  .markdown-body img[align=right] {
+      padding-left: 20px;
+  }
+
+  .markdown-body img[align=left] {
+      padding-right: 20px;
+  }
+
+  .markdown-body .emoji {
+      max-width: none;
+      vertical-align: text-top;
+      background-color: transparent;
+  }
+
+  .markdown-body span.frame {
+      display: block;
+      overflow: hidden;
+  }
+
+  .markdown-body span.frame>span {
+      display: block;
+      float: left;
+      width: auto;
+      padding: 7px;
+      margin: 13px 0 0;
+      overflow: hidden;
+      border: 1px solid var(--borderColor-default);
+  }
+
+  .markdown-body span.frame span img {
+      display: block;
+      float: left;
+  }
+
+  .markdown-body span.frame span span {
+      display: block;
+      padding: 5px 0 0;
+      clear: both;
+      color: var(--fgColor-default);
+  }
+
+  .markdown-body span.align-center {
+      display: block;
+      overflow: hidden;
+      clear: both;
+  }
+
+  .markdown-body span.align-center>span {
+      display: block;
+      margin: 13px auto 0;
+      overflow: hidden;
+      text-align: center;
+  }
+
+  .markdown-body span.align-center span img {
+      margin: 0 auto;
+      text-align: center;
+  }
+
+  .markdown-body span.align-right {
+      display: block;
+      overflow: hidden;
+      clear: both;
+  }
+
+  .markdown-body span.align-right>span {
+      display: block;
+      margin: 13px 0 0;
+      overflow: hidden;
+      text-align: right;
+  }
+
+  .markdown-body span.align-right span img {
+      margin: 0;
+      text-align: right;
+  }
+
+  .markdown-body span.float-left {
+      display: block;
+      float: left;
+      margin-right: 13px;
+      overflow: hidden;
+  }
+
+  .markdown-body span.float-left span {
+      margin: 13px 0 0;
+  }
+
+  .markdown-body span.float-right {
+      display: block;
+      float: right;
+      margin-left: 13px;
+      overflow: hidden;
+  }
+
+  .markdown-body span.float-right>span {
+      display: block;
+      margin: 13px auto 0;
+      overflow: hidden;
+      text-align: right;
+  }
+
+  .markdown-body code,
+  .markdown-body tt {
+      padding: .2em .4em;
+      margin: 0;
+      font-size: 85%;
+      white-space: break-spaces;
+      background-color: var(--bgColor-neutral-muted);
+      border-radius: 6px;
+  }
+
+  .markdown-body code br,
+  .markdown-body tt br {
+      display: none;
+  }
+
+  .markdown-body del code {
+      text-decoration: inherit;
+  }
+
+  .markdown-body samp {
+      font-size: 85%;
+  }
+
+  .markdown-body pre code {
+      font-size: 100%;
+  }
+
+  .markdown-body pre>code {
+      padding: 0;
+      margin: 0;
+      word-break: normal;
+      white-space: pre;
+      background: transparent;
+      border: 0;
+  }
+
+  .markdown-body .highlight {
+      margin-bottom: 16px;
+  }
+
+  .markdown-body .highlight pre {
+      margin-bottom: 0;
+      word-break: normal;
+  }
+
+  .markdown-body .highlight pre,
+  .markdown-body pre {
+      padding: 16px;
+      overflow: auto;
+      font-size: 85%;
+      line-height: 1.45;
+      color: var(--fgColor-default);
+      background-color: var(--bgColor-muted);
+      border-radius: 6px;
+  }
+
+  .markdown-body pre code,
+  .markdown-body pre tt {
+      display: inline;
+      max-width: auto;
+      padding: 0;
+      margin: 0;
+      overflow: visible;
+      line-height: inherit;
+      word-wrap: normal;
+      background-color: transparent;
+      border: 0;
+  }
+
+  .markdown-body .csv-data td,
+  .markdown-body .csv-data th {
+      padding: 5px;
+      overflow: hidden;
+      font-size: 12px;
+      line-height: 1;
+      text-align: left;
+      white-space: nowrap;
+  }
+
+  .markdown-body .csv-data .blob-num {
+      padding: 10px 8px 9px;
+      text-align: right;
+      background: var(--bgColor-default);
+      border: 0;
+  }
+
+  .markdown-body .csv-data tr {
+      border-top: 0;
+  }
+
+  .markdown-body .csv-data th {
+      font-weight: var(--base-text-weight-semibold, 600);
+      background: var(--bgColor-muted);
+      border-top: 0;
+  }
+
+  .markdown-body [data-footnote-ref]::before {
+      content: "[";
+  }
+
+  .markdown-body [data-footnote-ref]::after {
+      content: "]";
+  }
+
+  .markdown-body .footnotes {
+      font-size: 12px;
+      color: var(--fgColor-muted);
+      border-top: 1px solid var(--borderColor-default);
+  }
+
+  .markdown-body .footnotes ol {
+      padding-left: 16px;
+  }
+
+  .markdown-body .footnotes ol ul {
+      display: inline-block;
+      padding-left: 16px;
+      margin-top: 16px;
+  }
+
+  .markdown-body .footnotes li {
+      position: relative;
+  }
+
+  .markdown-body .footnotes li:target::before {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      bottom: -8px;
+      left: -24px;
+      pointer-events: none;
+      content: "";
+      border: 2px solid var(--borderColor-accent-emphasis);
+      border-radius: 6px;
+  }
+
+  .markdown-body .footnotes li:target {
+      color: var(--fgColor-default);
+  }
+
+  .markdown-body .footnotes .data-footnote-backref g-emoji {
+      font-family: monospace;
+  }
+
+  .markdown-body .pl-c {
+      color: var(--color-prettylights-syntax-comment);
+  }
+
+  .markdown-body .pl-c1,
+  .markdown-body .pl-s .pl-v {
+      color: var(--color-prettylights-syntax-constant);
+  }
+
+  .markdown-body .pl-e,
+  .markdown-body .pl-en {
+      color: var(--color-prettylights-syntax-entity);
+  }
+
+  .markdown-body .pl-smi,
+  .markdown-body .pl-s .pl-s1 {
+      color: var(--color-prettylights-syntax-storage-modifier-import);
+  }
+
+  .markdown-body .pl-ent {
+      color: var(--color-prettylights-syntax-entity-tag);
+  }
+
+  .markdown-body .pl-k {
+      color: var(--color-prettylights-syntax-keyword);
+  }
+
+  .markdown-body .pl-s,
+  .markdown-body .pl-pds,
+  .markdown-body .pl-s .pl-pse .pl-s1,
+  .markdown-body .pl-sr,
+  .markdown-body .pl-sr .pl-cce,
+  .markdown-body .pl-sr .pl-sre,
+  .markdown-body .pl-sr .pl-sra {
+      color: var(--color-prettylights-syntax-string);
+  }
+
+  .markdown-body .pl-v,
+  .markdown-body .pl-smw {
+      color: var(--color-prettylights-syntax-variable);
+  }
+
+  .markdown-body .pl-bu {
+      color: var(--color-prettylights-syntax-brackethighlighter-unmatched);
+  }
+
+  .markdown-body .pl-ii {
+      color: var(--color-prettylights-syntax-invalid-illegal-text);
+      background-color: var(--color-prettylights-syntax-invalid-illegal-bg);
+  }
+
+  .markdown-body .pl-c2 {
+      color: var(--color-prettylights-syntax-carriage-return-text);
+      background-color: var(--color-prettylights-syntax-carriage-return-bg);
+  }
+
+  .markdown-body .pl-sr .pl-cce {
+      font-weight: bold;
+      color: var(--color-prettylights-syntax-string-regexp);
+  }
+
+  .markdown-body .pl-ml {
+      color: var(--color-prettylights-syntax-markup-list);
+  }
+
+  .markdown-body .pl-mh,
+  .markdown-body .pl-mh .pl-en,
+  .markdown-body .pl-ms {
+      font-weight: bold;
+      color: var(--color-prettylights-syntax-markup-heading);
+  }
+
+  .markdown-body .pl-mi {
+      font-style: italic;
+      color: var(--color-prettylights-syntax-markup-italic);
+  }
+
+  .markdown-body .pl-mb {
+      font-weight: bold;
+      color: var(--color-prettylights-syntax-markup-bold);
+  }
+
+  .markdown-body .pl-md {
+      color: var(--color-prettylights-syntax-markup-deleted-text);
+      background-color: var(--color-prettylights-syntax-markup-deleted-bg);
+  }
+
+  .markdown-body .pl-mi1 {
+      color: var(--color-prettylights-syntax-markup-inserted-text);
+      background-color: var(--color-prettylights-syntax-markup-inserted-bg);
+  }
+
+  .markdown-body .pl-mc {
+      color: var(--color-prettylights-syntax-markup-changed-text);
+      background-color: var(--color-prettylights-syntax-markup-changed-bg);
+  }
+
+  .markdown-body .pl-mi2 {
+      color: var(--color-prettylights-syntax-markup-ignored-text);
+      background-color: var(--color-prettylights-syntax-markup-ignored-bg);
+  }
+
+  .markdown-body .pl-mdr {
+      font-weight: bold;
+      color: var(--color-prettylights-syntax-meta-diff-range);
+  }
+
+  .markdown-body .pl-ba {
+      color: var(--color-prettylights-syntax-brackethighlighter-angle);
+  }
+
+  .markdown-body .pl-sg {
+      color: var(--color-prettylights-syntax-sublimelinter-gutter-mark);
+  }
+
+  .markdown-body .pl-corl {
+      text-decoration: underline;
+      color: var(--color-prettylights-syntax-constant-other-reference-link);
+  }
+
+  .markdown-body [role=button]:focus:not(:focus-visible),
+  .markdown-body [role=tabpanel][tabindex="0"]:focus:not(:focus-visible),
+  .markdown-body button:focus:not(:focus-visible),
+  .markdown-body summary:focus:not(:focus-visible),
+  .markdown-body a:focus:not(:focus-visible) {
+      outline: none;
+      box-shadow: none;
+  }
+
+  .markdown-body [tabindex="0"]:focus:not(:focus-visible),
+  .markdown-body details-dialog:focus:not(:focus-visible) {
+      outline: none;
+  }
+
+  .markdown-body g-emoji {
+      display: inline-block;
+      min-width: 1ch;
+      font-family: "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+      font-size: 1em;
+      font-style: normal !important;
+      font-weight: var(--base-text-weight-normal, 400);
+      line-height: 1;
+      vertical-align: -0.075em;
+  }
+
+  .markdown-body g-emoji img {
+      width: 1em;
+      height: 1em;
+  }
+
+  .markdown-body .task-list-item {
+      list-style-type: none;
+  }
+
+  .markdown-body .task-list-item label {
+      font-weight: var(--base-text-weight-normal, 400);
+  }
+
+  .markdown-body .task-list-item.enabled label {
+      cursor: pointer;
+  }
+
+  .markdown-body .task-list-item+.task-list-item {
+      margin-top: var(--base-size-4);
+  }
+
+  .markdown-body .task-list-item .handle {
+      display: none;
+  }
+
+  .markdown-body .task-list-item-checkbox {
+      margin: 0 .2em .25em -1.4em;
+      vertical-align: middle;
+  }
+
+  .markdown-body .contains-task-list:dir(rtl) .task-list-item-checkbox {
+      margin: 0 -1.6em .25em .2em;
+  }
+
+  .markdown-body .contains-task-list {
+      position: relative;
+  }
+
+  .markdown-body .contains-task-list:hover .task-list-item-convert-container,
+  .markdown-body .contains-task-list:focus-within .task-list-item-convert-container {
+      display: block;
+      width: auto;
+      height: 24px;
+      overflow: visible;
+      clip: auto;
+  }
+
+  .markdown-body ::-webkit-calendar-picker-indicator {
+      filter: invert(50%);
+  }
+
+  .markdown-body .markdown-alert {
+      padding: var(--base-size-8) var(--base-size-16);
+      margin-bottom: var(--base-size-16);
+      color: inherit;
+      border-left: .25em solid var(--borderColor-default);
+  }
+
+  .markdown-body .markdown-alert>:first-child {
+      margin-top: 0;
+  }
+
+  .markdown-body .markdown-alert>:last-child {
+      margin-bottom: 0;
+  }
+
+  .markdown-body .markdown-alert .markdown-alert-title {
+      display: flex;
+      font-weight: var(--base-text-weight-medium, 500);
+      align-items: center;
+      line-height: 1;
+  }
+
+  .markdown-body .markdown-alert.markdown-alert-note {
+      border-left-color: var(--borderColor-accent-emphasis);
+  }
+
+  .markdown-body .markdown-alert.markdown-alert-note .markdown-alert-title {
+      color: var(--fgColor-accent);
+  }
+
+  .markdown-body .markdown-alert.markdown-alert-important {
+      border-left-color: var(--borderColor-done-emphasis);
+  }
+
+  .markdown-body .markdown-alert.markdown-alert-important .markdown-alert-title {
+      color: var(--fgColor-done);
+  }
+
+  .markdown-body .markdown-alert.markdown-alert-warning {
+      border-left-color: var(--borderColor-attention-emphasis);
+  }
+
+  .markdown-body .markdown-alert.markdown-alert-warning .markdown-alert-title {
+      color: var(--fgColor-attention);
+  }
+
+  .markdown-body .markdown-alert.markdown-alert-tip {
+      border-left-color: var(--borderColor-success-emphasis);
+  }
+
+  .markdown-body .markdown-alert.markdown-alert-tip .markdown-alert-title {
+      color: var(--fgColor-success);
+  }
+
+  .markdown-body .markdown-alert.markdown-alert-caution {
+      border-left-color: var(--borderColor-danger-emphasis);
+  }
+
+  .markdown-body .markdown-alert.markdown-alert-caution .markdown-alert-title {
+      color: var(--fgColor-danger);
+  }
+
+  .markdown-body>*:first-child>.heading-element:first-child {
+      margin-top: 0 !important;
+  }
 #+end_src
 * .folder
 :PROPERTIES:
@@ -2779,5 +2815,6 @@ git提交显示
 :END:
 wanderlust邮件folder文件
 #+begin_src unix-rc
-  %inbox:"donjuan@donplat.top"/clear@imap.donplat.top:993! "all"
+  %inbox:"donjuan@donplat.top"/clear@imap.donplat.top:993! "inbox"
+  %docs:"donjuan@donplat.top"/clear@imap.donplat.top:993! "docs"
 #+end_src

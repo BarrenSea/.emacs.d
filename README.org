@@ -16,7 +16,27 @@ $  cargo install typst-preview
 $  cargo install typst-cli
 $  emerge librime #gentoo
 #+end_src
+*** eaf
+gentoo安装以下包
+#+begin_src shell
+  emerge x11-misc/wmctrl dev-python/gssapi
+#+end_src
+克隆EAF仓库到 ~.emacs.d/site-lisp/~
+#+begin_src shell
+  git clone https://github.com/emacs-eaf/emacs-application-framework ~/.emacs.d/site-lisp
+#+end_src
 
+在gentoo Linux中 安装以下依赖
+#+begin_src 
+ qtwebengine pyqt5 
+#+end_src
+
+并创建python的虚拟环境
+#+begin_src shell
+  python -m venv eaf-venv
+  source eaf-venv/bin/activate.fish # 对于fish
+  pip install -U epc sexpdata==1.0.0 tld lxml PyQt6==6.5.0 PyQt6-Qt6==6.5.0 PyQt6-sip PyQt6-WebEngine==6.5.0 PyQt6-WebEngine-Qt6==6.5.0 
+#+end_src
 
 ** 改动
 *** Hydra
